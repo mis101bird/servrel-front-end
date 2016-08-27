@@ -64,8 +64,9 @@
         function hasPic(pic) {
             /*if (pic == "")
                 return "SERVREL.png";
-            else*/
-                return pic;
+            else
+                return pic;*/
+			return "SERVREL.png";
         }
 
         var data = '[{"favorpeople":"8","name":"Youtube_captionVideo","id":"197","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Youtube_playlist","id":"198","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"ahmedakhanGameInformation_Search","id":"1","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arrivalLocation_British_Air_FlightInformationServiceAPI","id":"2","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arriva_flightNumber_British_Air_FlightInformationServiceAPI","id":"3","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchBook","id":"4","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMap","id":"5","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMusic","id":"6","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchPicture","id":"7","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_list","id":"8","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_search_by_location","id":"9","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"bandsintown_artist_profile","id":"10","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"}]';
@@ -155,14 +156,40 @@
 				$.getJSON(site, function(result) {
 					console.log(result);
 					var lang = "<table id='favor' rules='rows'><tbody>";
+					var a = new Array();
 					$.each(result, function() {
-						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.api + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
+						a = (this.api).split(".json", 1);
+						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + a[0] + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id='d_" + this.api + "'></td></tr>";
 					});
 					lang += "</tbody></table>";
 
 					$('#favorAPI').html(lang);
 					$('#favorAPI').css("display", "none");
 					$('#favorAPI').slideDown("normal");
+					
+					$('.favorAPITitle').click(function() {
+						var id = (this.id).substring(14);
+						popWindow(id);
+					});
+					$('.delete').hover(function() {
+						$(this).css("width", "40px");
+					}, function() {
+						$(this).css("width", "35px");
+					});
+					$('.delete').click(function(e) {
+						e.stopPropagation();
+						var apiName = (this.id).substring(2);
+						var site = "http://140.121.197.135:7778/servrel/favorite?delete=true&api=" + apiName;
+						$.post(site, function(result) {
+							console.log("post: " + JSON.stringify(result));
+							if(result.code == "200"){
+								var id = "#favorAPITitle_" + this.id;
+								$(id).remove();
+							}
+						}, "json");
+						
+					});
+					
 				});
 			});	
 				/*var lang = "<table id='favor' rules='rows'><tbody>";
@@ -177,20 +204,7 @@
                 $('#favorAPI').css("display", "none");
                 $('#favorAPI').slideDown("normal");*/
 
-			$('.favorAPITitle').click(function() {
-				var id = (this.id).substring(14);
-				popWindow(id);
-			});
-			$('.delete').hover(function() {
-				$(this).css("width", "40px");
-			}, function() {
-				$(this).css("width", "35px");
-			});
-			$('.delete').click(function(e) {
-				e.stopPropagation();
-				var id = "#favorAPITitle_" + this.id;
-				$(id).remove();
-			});
+			
             
 		}
 

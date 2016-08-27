@@ -391,14 +391,15 @@
 
         function popWindow(apiid) {
             var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
-            $.getJSON(site, function(data) {
+            console.log("pop_site: " + site);
+			$.getJSON(site, function(data) {
                 var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.Info.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.Info.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
 
                 var para = data.requests;
                 show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;text-align:left;padding-left:1%;'>";
 
                 $.each(para, function() {
-                    if (this.defaultValue == undefined) {
+                    if (this.testData != undefined) {
                         show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.testData.value + "'><br>";
                     } else {
                         show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
@@ -436,33 +437,30 @@
                         $("#popTest_" + apiid).html(JSON.stringify(result));
                     });
                 });
+				
+				if(localStorage.userID != undefined){
+					$('#favorimg').hover(function() {
+						$(this).attr("src", "addfavor.png");
+						$(this).css("cursor", "pointer");
+					}, function() {
+						$(this).attr("src", "favorpeople.png");
+					});
 
-                $('#favorimg').hover(function() {
-                    $(this).attr("src", "addfavor.png");
-                    $(this).css("cursor", "pointer");
-                }, function() {
-                    $(this).attr("src", "favorpeople.png");
-                });
+					$('#favorimg').click(function() {
+						$(this).attr("src", "addfavor.png");
+						var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><label><input class='choose' type='radio' name='favorKind' value='F1'>Class 1</label><br><label><input class='choose' type='radio' name='favorKind' value='F2'>Class 2</label><br><label><input class='choose' type='radio' name='favorKind' value='F3'>Class 3</label><br><label><input class='choose' type='radio' name='favorKind' value='F3'>Class 4</label><br><input class='favorOK' type='submit' value='OK'></form>";
 
-                $('#favorimg').click(function() {
-                    $(this).attr("src", "addfavor.png");
-                    var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><label><input class='choose' type='radio' name='favorKind' value='F1'>Class 1</label><br><label><input class='choose' type='radio' name='favorKind' value='F2'>Class 2</label><br><label><input class='choose' type='radio' name='favorKind' value='F3'>Class 3</label><br><label><input class='choose' type='radio' name='favorKind' value='F3'>Class 4</label><br><input class='favorOK' type='submit' value='OK'></form>";
-
-                    layer.tips(con, this, {
-                        tips: [3, '#3BA99C'],
-                        time: 0,
-                        skin: 'favorTip',
-                        shade: [0, '#FFFFF'],
-                        shadeClose: true
-                    });
-                });
-
-                /*$('#favorimg').active(function () { 
-                	$(this).attr("src", "addfavor.png");
-                });*/
-
+						layer.tips(con, this, {
+							tips: [3, '#3BA99C'],
+							time: 0,
+							skin: 'favorTip',
+							shade: [0, '#FFFFF'],
+							shadeClose: true
+						});
+					});
+				}
             });
-            d3.event.stopPropagation();
+            //d3.event.stopPropagation();
         }
 
 

@@ -65,6 +65,7 @@
 }
 
 body .container {
+	font-family: Calibri;
 	position: absolute;
 	width: 18%;
 	top: 15%;
@@ -74,7 +75,7 @@ body .container {
 body .container .list-group-item {
 	width: 100%;
 	cursor: pointer;
-	font-size: 22px;
+	font-size: 26px;
 }
 
 body .container .list-group-item:hover {
