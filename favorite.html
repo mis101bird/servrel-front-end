@@ -140,7 +140,57 @@
 				list += "<li class='list-group-item' id='" + this + "'>" + this + "</li>";
 			});
 			$("#classList").html(list);*/
-			
+			showFavoriteList();
+		}
+		
+		function showFavoriteList(){
+			$(".list-group-item").click(function() {
+                $("li").filter('.active').removeClass('active');
+                $(this).addClass('active').removeClass('hover');
+                
+                
+				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + this.id;
+				console.log("test: " + site);
+				$.getJSON(site, function(result) {
+					console.log(result);
+					var lang = "<table id='favor' rules='rows'><tbody>";
+					$.each(result, function() {
+						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.api + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
+					});
+					lang += "</tbody></table>";
+
+					$('#favorAPI').html(lang);
+					$('#favorAPI').css("display", "none");
+					$('#favorAPI').slideDown("normal");
+				});
+			});	
+				/*var lang = "<table id='favor' rules='rows'><tbody>";
+				var json = JSON.parse(data);
+                $.each(json, function() {
+                    lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.name + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.name + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
+
+                });
+                lang += "</tbody></table>";
+
+                $('#favorAPI').html(lang);
+                $('#favorAPI').css("display", "none");
+                $('#favorAPI').slideDown("normal");*/
+
+			$('.favorAPITitle').click(function() {
+				var id = (this.id).substring(14);
+				popWindow(id);
+			});
+			$('.delete').hover(function() {
+				$(this).css("width", "40px");
+			}, function() {
+				$(this).css("width", "35px");
+			});
+			$('.delete').click(function(e) {
+				e.stopPropagation();
+				var id = "#favorAPITitle_" + this.id;
+				$(id).remove();
+			});
+            
 		}
 
         $(document).ready(function() {
@@ -164,59 +214,6 @@
                 }, "fast");
             });
 			
-			
-            $(".list-group-item").click(function() {
-                $("li").filter('.active').removeClass('active');
-                $(this).addClass('active').removeClass('hover');
-                
-                
-				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + this.id;
-				console.log("test: " + site);
-				$.getJSON(site, function(result) {
-					console.log(result);
-					var lang = "<table id='favor' rules='rows'><tbody>";
-					$.each(result, function() {
-						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.api + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
-					});
-					lang += "</tbody></table>";
-
-					$('#favorAPI').html(lang);
-					$('#favorAPI').css("display", "none");
-					$('#favorAPI').slideDown("normal");
-				});
-				
-				
-				
-				
-				
-				
-				/*var lang = "<table id='favor' rules='rows'><tbody>";
-				var json = JSON.parse(data);
-                $.each(json, function() {
-                    lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.name + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.name + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
-
-                });
-                lang += "</tbody></table>";
-
-                $('#favorAPI').html(lang);
-                $('#favorAPI').css("display", "none");
-                $('#favorAPI').slideDown("normal");*/
-
-                $('.favorAPITitle').click(function() {
-                    var id = (this.id).substring(14);
-                    popWindow(id);
-                });
-                $('.delete').hover(function() {
-                    $(this).css("width", "40px");
-                }, function() {
-                    $(this).css("width", "35px");
-                });
-                $('.delete').click(function(e) {
-                    e.stopPropagation();
-                    var id = "#favorAPITitle_" + this.id;
-                    $(id).remove();
-                });
-            });
         });
     </script>
 </head>
