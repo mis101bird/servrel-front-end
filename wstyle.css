@@ -1,0 +1,60 @@
+#leftPart2{ 
+	width: 25%;
+	height: 80%;
+	position: absolute;
+	left: 2%;
+	top: 18%;
+	float: left;
+	background-color: #FCFFF5;
+	border: 1px blue dashed; 
+	padding: 3px;
+	overflow: auto;
+
+}
+#visualization2	{ width: 72%;
+		  height: 80%;
+		  position: absolute;
+		  top: 18%;
+		  float: left;
+		  background-color: #FCFFF5;
+		  left: 28%;
+		  padding: 2px;
+		  border: 1px green dashed;
+		  border-top: none;
+		  overflow: auto; }
+		  
+/*#graphBar2{ width: 67%;
+			height: 6%;
+			background-color: #91AA9D;
+			position: absolute;
+			top: 12%;
+			border: 2px #91AA9D solid; 
+			font-family: Calibri; 
+			font-weight: bold;
+			text-align: center;
+			font-size: 40px;
+			left: 30%;
+			line-height: 35px;
+			color: #3E606F;
+			cursor: default;
+}*/
+#titleBar img {
+	float: left;
+	margin: 3px 0 0 3px;
+	cursor: pointer;
+}
+#leftPart3{ 
+	width: 23%;
+	height: 80%;
+	position: absolute;
+	left: 2%;
+	top: 18%;
+	float: left;
+	background-color: #FCFFF5;
+	border: 1px blue dashed; 
+	padding: 3px;
+	overflow: auto;
+
+}
+
+	  		  

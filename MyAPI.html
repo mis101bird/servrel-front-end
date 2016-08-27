@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta charset="utf-8">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MyAPI</title>
+    <!--link rel="stylesheet" type="text/css" href="style.css"-->
+    <!--link rel="stylesheet" type="text/css" href="scriptStyle.css"-->
+    <link rel="stylesheet" type="text/css" href="wstyle.css">
+	<link rel="stylesheet" type="text/css" href="personalCSS.css">
+	
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <!--script src="http://code.jquery.com/jquery-latest.pack.js"></script-->
+    <script src="layer-v2.3/layer/layer.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
+	<style type = "text/css">
+		#manageAPI{
+			width: 72%;
+			height: 80%;
+			left: 28%;
+			top: 18%;
+			position: absolute;
+			float: left;
+			background-color: #FCFFF5;
+			padding: 5px;
+			border: 1px green dashed;
+			border-top: none;
+			overflow: auto;
+			font-size: 18px;
+			font-family: Calibri;
+		}
+		#manageAPI #APIpic{
+			position: relative;
+			width: 180px;
+			height: 180px;
+			text-align: center;
+			vertical-align: middle;
+			display:table-cell;
+			border: 1px #D6D5C9 solid;
+			padding: 5px;
+			margin: 10px 0 0 20px;
+			float: left;
+		}
+		#manageAPI #APIpic img{
+			position: relative;
+			height: 50%;
+			top: 25%;
+		}
+		#manageAPI #modifyAPI{
+			position: relative;
+			left: 5%;
+			float: left;
+		}
+		#manageAPI #modifyAPI .item{
+			color: #3E606F;
+			font-weight: bold;
+			font-size: 20px;
+		}
+		#manageAPI #modifyAPI input{
+			width: 250px;
+			margin: 3px;
+			font-size: 18px;
+			padding: 0.8px;
+		}
+		#manageAPI #modifyAPI textarea{
+			width: 400px;
+			height: 110px;
+			margin-left: 10px;
+		}
+		#manageAPI #modifyAPI #mBtn{
+			width: 85px;
+			border: 2px #0A090C solid;
+			background-color: #0A090C;
+			color: #F0EDEE;
+			border-radius: 5px;
+			margin: 10px;
+			float: left;
+		}
+	</style>
+	
+	<script>
+    $(document).ready(function() {
+        $("#flotTag").hover(function() {
+            $(this).animate({
+                margin: "-10px 0 0 -185px",
+                width: "185px",
+                height: "130px"
+            }, "fast");
+        }, function() {
+            $(this).animate({
+                margin: "0 0 0 -35px",
+                width: "31px",
+                height: "26px"
+            }, "fast");
+        });
+		$(".list-group-item").click(function() {
+			$("li").filter('.active').removeClass('active');
+			$(this).addClass('active').removeClass('hover');
+			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><form id='modifyAPI'><span class='item'>API name : </span><input type='text' value='Bandsintown artist event list'><br><span class='item'>Host URL : </span><input type='text' value='http://api.bandsintown.com'><br><span class='item'>Path : </span><input type='text' value='/artists/{artists}/events.json'><br><span class='item'>Http method : </span><input type='text' value='GET'><br><span class='item'>Content type : </span><input type='text' value='application/json;charset=utf-8'><br><span class='item'>API Home : </span><input type='text' value='http://www.bandsintown.com/api/requests#artists-get'><br><span class='item'>Introduction : </span><br><textarea>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.</textarea><br><input type='button' id='mBtn' value='Save'><input type='button' id='mBtn' value='Cancel'></form>";
+			
+			$('#manageAPI').html(con);
+			
+        });
+		$("#newMyAPI").click(function() {
+			var con = "<div for='file' class='text-info'class='toggle-form active'><label><h4>Format</h4></label><div><select class='form-control' id='file-format' name='format'><option value='swagger1.2' selected>Swagger 1.2</option></select></div><div class='form-group' class='text-info'><label for='exampleInputFile'><h4>檔案上傳</h4></label><input type='file' class='btn-text'id='exampleInputFile'></div><div class='or'><h4>----------------------------------------------------------------------------or----------------------------------------------------------------------------</h4></div><div for='address' class='form-group'><label>Base URL</label><input id='address' type='url' name='address' placeholder='http://api.yourdomain.com' value='' class='form-control'></div><div for='apiName' class='form-group'><label>API Name <span class='text-muted hide'>(optional)</span></label><input id='apiName' type='text' name='apiName' placeholder='i.e. GeoGraph' maxlength='100' value='' class='form-control'></div></div>";
+			$('#manageAPI').html(con);
+		});
+		
+		
+    });
+	</script>
+</head>
+
+<body>
+    <div id="topBar">
+        <a href="mixList.html" title="index"><img id="top_name" src="title.jpg" alt="picture" /></a>
+    </div>
+    <div id="titleBar">API Management</div>
+	
+	<div class="container">
+        <h2>My API</h2>
+		<button type="button" class="btn btn-default btn-lg" id="newMyAPI">
+			<span class="glyphicon glyphicon-plus"></span> New API
+        </button>
+		<br><br>
+        <ul class="list-group">
+            <li class="list-group-item">Book_Search</li>
+            <li class="list-group-item">Movie_Search</li>
+            <li class="list-group-item">Music_Search</li>
+            <li class="list-group-item">Comic_Search</li>
+			<li class="list-group-item">Travel_Search</li>
+        </ul>
+    </div>
+	
+	
+    <div id="manageAPI">
+        <div for="file" class="text-info"class="toggle-form active">
+			<label><h4>Format</h4></label>
+            <div>
+				<select class="form-control" id="file-format" name="format">
+					<option value="swagger1.2" selected>Swagger 1.2</option>
+				</select>
+			</div>
+            <div class="form-group" class="text-info">
+                <label for="exampleInputFile">
+					<h4>檔案上傳</h4>
+				</label>
+                <input type="file" class="btn-text"id="exampleInputFile">
+            </div>
+            <div class="or">
+                <h4>----------------------------------------------------------------------------or----------------------------------------------------------------------------</h4>
+			</div>
+            <div for="address" class="form-group">
+				<label>Base URL</label>
+				<input id="address" type="url" name="address" placeholder="http://api.yourdomain.com" value="" class="form-control">
+			</div>
+            <div for="apiName" class="form-group">
+				<label>API Name <span class="text-muted hide">(optional)</span></label>
+				<input id="apiName" type="text" name="apiName" placeholder="i.e. GeoGraph" maxlength="100" value="" class="form-control">
+			</div>                
+        </div>
+    </div>
+    <div id="flotTag">
+        <table id="pageLink">
+            <tr>
+                <td><img src="accountPic.png" /></td>
+                <td><a id="accLink" href="login.html">Account</a></td>
+            </tr>
+            <tr>
+                <td><img src="workPic.png" /></td>
+                <td><a id="workLink" href="workspace.html">Workspace</a></td>
+            </tr>
+            <tr>
+                <td><img src="favoritePic.png" /></td>
+                <td><a id="favLink" href="favorite.html">Favorite API</a></td>
+            </tr>
+            <tr>
+                <td><img src="myAPIPic.png" /></td>
+                <td><a id="myLink" href="MyAPI.html">My API</a></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+.searchType{
+	margin: 8px 0 0 8px;
+}
+.searchType input[type="radio"] {
+	display: none;
+}
+.searchType input[type="radio"] + label {
+	display: inline-block;
+	background-color: #E0E0E0;
+	cursor: pointer;
+	padding: 5px 10px;
+}
+.searchType input[type="radio"]:checked + label {
+	background-color: #6DD3CE;
+	color: #fff;
+}
+.searchType label {
+	margin: 0 10px 0 0;
+	font-size: 16px;
+	font-weight: normal;
+}
+
+#searchContent{
+	font-size: 16px;
+	margin: 18px 0 0 10px;
+	float: left;
+}
+#searchContent pre{
+	font-family: Calibri;
+}
+#searchContent input[type="text"]{
+	margin: 2px;
+}
+#go{
+	margin: 16px 0 0 10px;
+	width: 75px;
+	text-align: center;
+	letter-spacing: 1px;
+	font-size: 18px;
+	border: 2px #0A090C solid;
+	background-color: #0A090C;
+	color: #F0EDEE;
+	cursor: pointer;
+}
+.add{
+	margin: 8px 0 0 2px;
+	float: left;
+	cursor: pointer;
+}
+#inTable{
+	margin: 8px 3px 0 0;
+	float: left;
+}
+#inTable td{
+	border-top: 1px #3E606F solid;
+	border-bottom: 1px #3E606F solid;
+	padding: 3px;
+}
+#outTable{
+	margin: 8px 3px 0 10px;
+	float: left;
+}
+#outTable td{
+	border-top: 1px #3E606F solid;
+	border-bottom: 1px #3E606F solid;
+	padding: 3px;
+}
+
+#result{ width:100%;
+		//border: 1px black solid;
+		//position: relative;
+		}
+#result img{ width: 50%;
+		 float: left;
+		 padding: 4px;
+		 margin-top: 6px; }
+#result h2, h3{ float: left; }
+td{ padding: 0px; }
+.logo{ width: 50px; }
+.apititle{ 
+	cursor: pointer;
+	background: #FCFFF5;
+	color:  #3E606F;
+	border-top: 3px #3E606F solid;
+	border-bottom: 3px #3E606F solid; 
+	table-layout: fixed;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+.selected{
+	background: #3E606F;
+	color: #FFFFFF;
+}
+	
+#saveButton{
+	border: 1px #607B7D solid;
+	position: absolute;
+	z-index: 1;
+	top: 18%;
+	display: none;
+}
+	
+#saveButton button{
+	border: 2px #607B7D solid;
+	font-size: 24px;
+	font-family: Calibri;
+	width: 25%;
+	position: relative;
+	float: left;
+	background-color: #BFBFBF;
+	color: 	#607B7D;
+	cursor: pointer;
+}
+
+#saveButton input{
+    border: 1px #607B7D solid;	
+	font-family: Calibri;
+	font-size: 16px;
+	height: 35px;
+   	
+}
+
+.node circle {
+	cursor: pointer;
+	stroke: #3182bd;
+	stroke-width: 1.5px;
+}
+
+.node text {
+	pointer-events: none;
+	font-size: 12px;
+	font-family: FontAwesome;
+	fill: #304D6D;
+}
+
+
+/*line.link {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 2;
+}*/
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 3px;
+}
+.link2{
+	fill: none;
+  stroke: #545E75;
+  stroke-width: 3px;
+	
+}
+.linetext {
+			font-size: 12px ;
+			font-family: Microsoft YaHei;
+			fill:#0000FF;
+			fill-opacity:0.0;
+		}
+
+#content{
+	display: none;
+}  
+	  
+.apiblock {
+	//position: relative;
+	width: 100%;
+	height: 650px;
+}
+.apiblock ul, .apiblock li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.apiblock #tabs li {
+	float: left;
+	//position: relative;
+	margin: 0 0 -1px 0.6px;
+	border: 1px #91AA9D solid;
+	background: #91AA9D;
+	color: white;
+	font-size: 26px;
+	font-family: Calibri;
+	text-align: center;
+	width: 24.5%;
+	cursor: pointer;
+	border-radius: 5px 5px 0 0;
+}
+.apiblock #tabs li.active {
+	background: #3E606F;
+	border: 0.5px #FFFFFF solid;
+	padding-bottom: 1px;
+	border-bottom: none;
+}
+.apiblock #tabs li.hover{
+	background: #9DCBBA;
+	border: 0.5px #9DCBBA solid;
+}
+.apiblock  #tabContent{
+	clear: both;
+	border: 1px solid #DDD;
+	border-bottom: none;
+	border-top: none;
+	position: relative;
+	width: 99.5%;
+	height: 610px;
+	overflow: hidden;
+}
+.apiblock #tabContent li {
+	position: absolute;
+	padding: 2%;
+	margin: 0 6% 0 0;
+	width: 96%;
+}
+
+.apiblock #tabContent li p {
+	font-size: 20px;
+}
+
+.apiblock #tabContent li .item{
+	color: #3E606F;
+	font-weight: bold;
+}
+	
+.apiblock #tabContent li .reAPITable{
+	width:94%;
+	left: 3%;
+	top: 3%;
+	border: 3px black solid;
+	padding-left: 3px;
+	font-size: 24px;
+	table-layout: fixed;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.apiblock #tabContent li .reAPITable td{
+	padding: 0 3px 0 5px;
+}
+
+.apiblock #tabContent li .reAPITable img{
+	width: 80%;
+	position: relative;
+	margin: 1%;
+	cursor: pointer;
+}
+.apiblock #tabContent li #APItest{
+	border: 1px black solid;
+	width: 80%;
+	font-size: 16px;
+	text-align: center;
+	margin: 2% 0 2% 0;
+	padding: 2%;
+	table-layout: fixed;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.apiblock #tabContent li #APItest input{
+	margin: 1%;
+}
+		  
+.apiblock #tabContent li #APItest .testResult{
+	width: 98%;
+	height: 80px;
+	border: 1px gray dashed;
+	overflow: auto;
+}
+
+body .mySkin .layui-layer-title{
+	background: #91AA9D;
+	color: #3E606F;
+	border: none;
+	font-size: 36px;
+	font-weight: bold;
+}
+
+body .mySkin .layui-layer-content{
+	border: none;
+	padding-left: 5%;
+	font-size: 20px;
+}
+
+body .mySkin .layui-layer-content p .item{
+	color: #3E606F;
+	font-weight: bold;
+}
+
+body .mySkin .layui-layer-content #wfInfo{
+	float: right;
+	text-align: center;
+	margin: 8px 26px 0 0;
+}
+
+body .mySkin .layui-layer-content #wfInfo td{
+	height: 25px;
+	padding: 4px;
+}
+
+body .mySkin .layui-layer-content #wfInfo img{
+	height: 100%;
+	
+}
+
+body .mySkin .layui-layer-content #APItest{
+	border: 1px black solid;
+	width: 80%;
+	font-size: 16px;
+	text-align: center;
+	margin: 2%;
+	padding: 2%;
+	table-layout: fixed;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+body .mySkin .layui-layer-content #APItest input{
+	margin: 1%;
+}
+		  
+body .mySkin .layui-layer-content #APItest .popTestResult{
+	width: 98%;
+	height: 150px;
+	border: 1px gray dashed;
+	overflow: auto;
+}
+
+body .favorTip .layui-layer-content{
+	width: 150px;
+	height: 200px;
+	font-size: 16px;
+	padding: 5px;
+}
+
+body .favorTip .layui-layer-content .choose{
+	margin: 0 6px 0 0;
+}
+
+body .favorTip .layui-layer-content label{
+	font-weight: normal;
+}
+	  
+body .favorTip .layui-layer-content .favorOK{
+	position: absolute;
+	width: 140px;
+	height: 25px;
+	top: 170px;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	border: 1px #08605F solid;
+	background-color: #08605F;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#load{
+	display: none;
+	position: absolute;
+	text-align: center;
+	width: 150px;
+	left: 20%;
+	top: 45%;
+	z-index: 3;
+}

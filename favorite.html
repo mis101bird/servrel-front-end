@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Favorite0728</title>
+    <!--link rel="stylesheet" type="text/css" href="style.css"-->
+    <link rel="stylesheet" type="text/css" href="scriptStyle.css">
+	<link rel="stylesheet" type="text/css" href="personalCSS.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="layer-v2.3/layer/layer.js"></script>
+
+    <style type="text/css">
+        #flotTag {
+            background: url("tag_arrow.png") no-repeat scroll left top;
+            width: 31px;
+            height: 26px;
+            position: absolute;
+            top: 80%;
+            left: 100%;
+            margin: 0 0 0 -35px;
+            overflow: hidden;
+        }
+        #favorAPI {
+            width: 72%;
+            height: 80%;
+			left: 28%;
+			top: 18%;
+            position: absolute;
+            float: left;
+            background-color: #FCFFF5;
+            padding: 2px;
+            border: 1px green dashed;
+			border-top: none;
+            overflow: auto;
+        }
+        .logo {
+            width: 65px;
+        }
+        #favor {
+            width: 100%;
+        }
+        #favor tr {
+            background: #FCFFF5;
+            color: #3E606F;
+            border-bottom: 3px #3E606F solid;
+            table-layout: fixed;
+            word-wrap: break-word;
+            word-break: break-all;
+            cursor: pointer;
+        }
+        #favor td {
+            padding: 2px;
+        }
+		
+    </style>
+
+
+    <script>
+        function hasPic(pic) {
+            if (pic == "")
+                return "SERVREL.png";
+            else
+                return pic;
+        }
+
+        var data = '[{"favorpeople":"8","name":"Youtube_captionVideo","id":"197","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Youtube_playlist","id":"198","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"ahmedakhanGameInformation_Search","id":"1","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arrivalLocation_British_Air_FlightInformationServiceAPI","id":"2","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arriva_flightNumber_British_Air_FlightInformationServiceAPI","id":"3","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchBook","id":"4","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMap","id":"5","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMusic","id":"6","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchPicture","id":"7","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_list","id":"8","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_search_by_location","id":"9","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"bandsintown_artist_profile","id":"10","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"}]';
+
+        function popWindow(apiid) {
+            var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
+            $.getJSON(site, function(data) {
+                var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.Info.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.Info.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
+
+                var para = data.requests;
+                show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;text-align:left;padding-left:1%;'>";
+
+                $.each(para, function() {
+                    if (this.testData != undefined) {
+                        show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.testData.value + "'><br>";
+                    } else {
+                        show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
+                    }
+                });
+
+                show += "</td><td><input type='button' id='popTestBtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
+
+                layer.open({
+                    type: 1,
+                    title: 'API Information',
+                    closeBtn: 0,
+                    shadeClose: true,
+                    area: ['50%', '80%'],
+                    skin: 'mySkin',
+                    content: show
+                });
+
+                var testbtn = "#popTestBtn_" + apiid;
+                $(testbtn).on("click", function() {
+                    var site = data.Info.httpMethod + "://" + data.Info.hostUrl + data.Info.path + "?";
+                    var n = 0;
+                    $.each(para, function() {
+                        if (n != 0) {
+                            site += "&";
+                        }
+                        var input = $("#" + apiid + "_pop_" + this.name).val();
+                        //console.log(this.name + ":" + );
+                        site += this.name + "=" + input;
+                        n++;
+                    });
+                    console.log("site: " + site);
+                    $.getJSON(site, function(result) {
+                        console.log(result);
+                        $("#popTest_" + apiid).html(JSON.stringify(result));
+                    });
+                });
+
+            });
+        }
+
+
+        $(document).ready(function() {
+            if (localStorage.userID == undefined) {
+                window.location.assign("login.html");
+            }
+
+            $("#flotTag").hover(function() {
+                $(this).animate({
+                    margin: "-10px 0 0 -185px",
+                    width: "185px",
+                    height: "130px"
+                }, "fast");
+            }, function() {
+                $(this).animate({
+                    margin: "0 0 0 -35px",
+                    width: "31px",
+                    height: "26px"
+                }, "fast");
+            });
+			
+			$("#newClass").click(function() {
+				var con = "Class name: <input type='text' id='newClassName'>";
+				
+				layer.confirm(con, {
+						btn: ['OK'], //按钮
+						title: 'Add a class'
+					}, function(){
+						var msg = "<li class='list-group-item'>" + $("#newClassName").val(); + "</li>"
+						$("#classList").append(msg);
+					}
+				);
+			});
+			
+            $(".list-group-item").click(function() {
+                $("li").filter('.active').removeClass('active');
+                $(this).addClass('active').removeClass('hover');
+                var lang = "<table id='favor' rules='rows'><tbody>";
+                var json = JSON.parse(data);
+                $.each(json, function() {
+                    lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.name + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.name + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
+
+                });
+                lang += "</tbody></table>";
+
+                $('#favorAPI').html(lang);
+                $('#favorAPI').css("display", "none");
+                $('#favorAPI').slideDown("normal");
+
+                $('.favorAPITitle').click(function() {
+                    var id = (this.id).substring(14);
+                    popWindow(id);
+                });
+                $('.delete').hover(function() {
+                    $(this).css("width", "40px");
+                }, function() {
+                    $(this).css("width", "35px");
+                });
+                $('.delete').click(function(e) {
+                    e.stopPropagation();
+                    var id = "#favorAPITitle_" + this.id;
+                    $(id).remove();
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="topBar">
+        <a href="mixList.html" title="index"><img id="top_name" src="title.jpg" alt="picture" /></a>
+    </div>
+	<div id="titleBar">Favorite List</div>
+
+    <div class="container">
+        <h2>Favorite API</h2>
+		<button type="button" class="btn btn-default btn-lg" id="newClass">
+			<span class="glyphicon glyphicon-plus"></span> Add a class
+        </button>
+		<br><br>
+		<ul class="list-group" id="classList">
+            <li class="list-group-item">Class 1</li>
+            <li class="list-group-item">Class 2</li>
+            <li class="list-group-item">Class 3</li>
+            <li class="list-group-item">Class 4</li>
+        </ul>
+    </div>
+
+    <div id="favorAPI">
+
+    </div>
+
+    <div id="flotTag">
+        <table id="pageLink">
+            <tr>
+                <td><img src="accountPic.png" /></td>
+                <td><a id="accLink" href="login.html">Account</a></td>
+            </tr>
+            <tr>
+                <td><img src="workPic.png" /></td>
+                <td><a id="workLink" href="workspace.html">Workspace</a></td>
+            </tr>
+            <tr>
+                <td><img src="favoritePic.png" /></td>
+                <td><a id="favLink" href="favorite.html">Favorite API</a></td>
+            </tr>
+            <tr>
+                <td><img src="myAPIPic.png" /></td>
+                <td><a id="myLink" href="MyAPI.html">My API</a></td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+
+</html>

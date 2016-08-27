@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta charset="utf-8">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Login0728</title>
+    <!--link rel="stylesheet" type="text/css" href="style.css"-->
+    <!--link rel="stylesheet" type="text/css" href="scriptStyle.css"-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.pack.js"></script>
+    
+	<style type = "text/css">
+		#topBar{ 
+			width: 99%;
+			height: 12%;
+			background-color: #193441;
+			position: absolute;
+			top: 0;
+		}
+		#top_name{
+			position: absolute;
+			height: 80%;
+			top: 10%;
+			left: 50px;
+		}
+		#flotTag{
+			background: url("tag_arrow.png") no-repeat scroll left top;
+			width: 31px;
+			height: 26px;
+			position: absolute;
+			top: 80%;
+			left: 100%;
+			margin: 0 0 0 -35px;
+			overflow: hidden;
+		}
+		#pageLink{
+			position: relative;
+			width: 155px;
+			left: 33px;
+			background-color: #3E606F;
+			font-size: 20px;
+		}
+		#pageLink td{
+			padding: 1px;
+			line-height: 15px;
+			vertical-align: middle;
+		}
+		#pageLink img{
+			margin: 2px 5px 2px 3px;
+		}
+		#pageLink a{
+			color: white;
+			text-decoration: none;
+		}
+		.myForm{
+			position: absolute;
+			top: 25%;
+			left: 28%;
+			font-size: 24px;
+		}
+		pre{font-family: Calibri;}
+		.btn{
+			position: relative;
+			width: 85px;
+			font-size: 18px;
+			border: 2px #0A090C solid;
+			background-color: #0A090C;
+			color: #F0EDEE;
+			border-radius: 5px;
+			margin: 5px;
+			cursor: pointer;
+		}
+		#log{ 
+			width: 48%;
+			height: 80%;
+			position: absolute;
+			top: 18%;
+			float: left;
+			background-color: #FCFFF5;
+			border: 1px blue dashed; 
+			padding: 3px;
+			overflow: auto;
+			border-top: none;
+		}
+		#sign{ 
+			width: 49.6%;
+			height: 80.4%;
+			position: absolute;
+			top: 18%;
+			float: left;
+			background-color: #FCFFF5;
+			left: 49.5%;
+			padding: 2px;
+			border: 1px green dashed;
+			overflow: auto;
+			border-top: none;
+		}
+		#logBar{ 
+			width: 48.5%;
+			height: 6%; 
+			background-color: #3E606F;
+			position: absolute;
+			top: 12%;
+			border: 1px #3E606F solid; 
+			font-family: Calibri; 
+			font-weight: bold;
+			text-align: center;
+			font-size: 40px; 
+			line-height: 35px;
+			color: #FCFFF5;
+			
+		}
+		#signBar{ 
+			width: 49.9%;
+			height: 6%;
+			background-color: #91AA9D;
+			position: absolute;
+			top: 12%;
+			border: 1px #91AA9D solid; 
+			font-family: Calibri; 
+			font-weight: bold;
+			text-align: center;
+			font-size: 40px;
+			left: 49.5%;
+			line-height: 35px;
+			color: #3E606F;
+		}
+		#myInfo{
+			position: relative;
+			width: 250px;
+			height: 200px;
+			font-size: 24px;
+			left: 50%;
+			margin: 150px 0 0 -125px;
+		}
+		.logoutbtn{
+			position: relative;
+			width: 36%;
+			font-size: 18px;
+			border: 2px #0A090C solid;
+			background-color: #0A090C;
+			color: #F0EDEE;
+			border-radius: 5px;
+			padding: 2px;
+			left: 32%;
+			top: 50px;
+			cursor: pointer;
+		}
+		#accPart{ 
+			width: 98.4%;
+			height: 80%;
+			position: absolute;
+			top: 18%;
+			float: left;
+			background-color: #FCFFF5;
+			border: 1px blue dashed; 
+			padding: 3px;
+			overflow: auto;
+			border-top: none;
+		}
+		#accountBar{ 
+			width: 98.8%;
+			height: 6%; 
+			background-color: #3E606F;
+			position: absolute;
+			top: 12%;
+			border: 1px #3E606F solid; 
+			font-family: Calibri; 
+			font-weight: bold;
+			text-align: center;
+			font-size: 40px; 
+			line-height: 35px;
+			color: #FCFFF5;
+		}
+	</style>
+
+    <script>
+		
+		function logIn(){
+			var acc = $('input[name="account"]').val();
+			var pass = $('input[name="password"]').val();
+			
+			//var site = "http://bluemix-siri.mybluemix.net/login?account=" + acc + "&password=" + pass;
+			var site = "http://140.121.197.135:7778/servrel/login";
+			//var site = "http://140.121.197.135:7778/servrel/login?account=" + acc + "&password=" + pass;
+			
+			
+			//$("#login").attr("action", site);
+			/*$("#login").submit(function(e)
+			{
+				//var formURL = $(this).attr("action");
+				/*$.ajax(
+				{
+					url : formURL,
+					type: "POST",
+					data: {"account": acc, "password": pass},
+					success:function(data, textStatus, jqXHR) 
+					{
+						console.log(data);
+					},
+					error: function(jqXHR, textStatus, errorThrown) 
+					{
+						console.log(errorThrown);
+					}
+				});*/
+				
+				/*$.post(site, {"account": acc, "password": pass}, function(result) {
+					console.log("post: " + JSON.stringify(result));
+					if(result.code == "200"){
+						alert("Success");
+						console.log("co: " + session.getAttribute("JSESSIONID"));
+						localStorage.userID = acc;
+						$.post("http://140.121.197.135:7778/servrel/workspace/project", function(result) {
+							console.log("post(w): " + JSON.stringify(result));
+						}, "json");
+						//window.history.back();
+					}
+					else{
+						alert(result.message);
+						$('input[name="password"]').val("");
+					}
+				}, "json");
+				
+				
+				e.preventDefault();	//STOP default action
+				e.unbind(); //unbind. to stop multiple form submit.
+			});
+			$("#login").submit();*/
+			
+			
+			
+			
+			$.post(site, {"account": acc, "password": pass}, function(result) {
+				console.log("post: " + JSON.stringify(result));
+				if(result.code == "200"){
+					alert("Success");
+					localStorage.userID = acc;
+					window.history.back();
+				}
+				else{
+					alert(result.message);
+					$('input[name="password"]').val("");
+				}
+			}, "json");
+		}
+		
+		function signUp(){
+			var user = $('input[name="userName"]').val();
+			var mail = $('input[name="email"]').val();
+			var myAcc = $('input[name="myAccount"]').val();
+			var myPass = $('input[name="myPassword"]').val();
+			
+			var site = "http://bluemix-siri.mybluemix.net/signup?user=" + user + "&account=" + myAcc + "&password=" + myPass + "&email=" + mail;
+			$.getJSON(site, function(result) {
+				if(result.result == "OK"){
+					alert("Registration success");
+					$("#signup").find(".signData").each(function() {
+						$(this).val("");
+					});
+				}
+					
+            });
+			
+		}
+		
+		function logOut(){
+			var site = "http://140.121.197.135:7778/servrel/logout";
+			$("#logoutBtn").click(function() {
+				$.post(site, function(result) {
+					console.log("post(logout): " + JSON.stringify(result));
+					localStorage.removeItem("userID");
+					window.location.assign("login.html");
+				}, "json");
+            });
+		}
+		
+		$(document).ready(function() {
+			$("#flotTag").hover(function() {
+				$(this).animate({margin: "-10px 0 0 -185px", width: "185px", height: "130px"}, "fast");
+			}, function(){
+				$(this).animate({margin: "0 0 0 -35px", width: "31px", height: "26px"}, "fast");
+			});
+			
+			if(localStorage.userID != undefined){
+				var con = "<div id='topBar'><a href='mixList.html' title='index'><img id='top_name' src='title.jpg' alt='picture'/></a></div><div id='accountBar'>My Account</div><div id = 'accPart'><div id='myInfo'>" + "Account: " + localStorage.userID + "<br><input id='logoutBtn' class='logoutbtn' type='button' value='Log Out'>" + "</div></div>" + "<div id='flotTag'><table id = 'pageLink'><tr><td><img src = 'accountPic.png'/></td><td><a id = 'accLink' href='login.html'>Account</a></td></tr><tr><td><img src = 'workPic.png'/></td><td><a id = 'workLink' href='workspace.html'>Workspace</a></td></tr><tr><td><img src = 'favoritePic.png'/></td><td><a id = 'favLink' href='favorite.html'>Favorite API</a></td></tr><tr><td><img src = 'myAPIPic.png'/></td><td><a id = 'myLink' href=''>My API</a></td></tr></table></div>";
+				$("body").html(con);
+				logOut();
+			}
+            
+		});
+		
+	</script>
+</head>
+
+<body>
+
+    <div id="topBar">
+        <a href="mixList.html" title="index"><img id="top_name" src="title.jpg" alt="picture" /></a>
+    </div>
+	<div id="logBar">Log In</div>
+    <div id="signBar">Sign Up</div>
+	
+	<div id="log">
+        <form id="login" class="myForm" method="post" action="JavaScript:logIn()">
+			<pre>Account: 	<input type = "text" name = "account"></pre>
+			<pre>Password: 	<input type = "password" name = "password"></pre>	
+			<input class="btn" type="submit" value="Log In" style="left: 30%;">
+		</form>
+    </div>
+    <div id="sign">
+        <form id="signup" class="myForm" method="get" action="JavaScript:signUp()" style="top: 18%;">
+			<pre>User name:	<input class = "signData" type = "text" name = "userName"></pre>
+			<pre>Email:		<input class = "signData" type = "email" name = "email"></pre>
+			<pre>Account: 	<input class = "signData" type = "text" name = "myAccount"></pre>
+			<pre>Password: 	<input class = "signData" type = "password" name = "myPassword"></pre>
+			<input class="btn" type="submit" value="Sign Up" style="left: 30%;">
+		</form>
+    </div>
+	
+	<div id="flotTag">
+        <table id = "pageLink">
+            <tr>
+                <td><img src = "accountPic.png"/></td><td><a id = "accLink" href="login.html">Account</a></td>
+            </tr>
+			<tr>
+				<td><img src = "workPic.png"/></td><td><a id = "workLink" href="workspace.html">Workspace</a></td>
+			</tr>
+			<tr>
+				<td><img src = "favoritePic.png"/></td><td><a id = "favLink" href="favorite.html">Favorite API</a></td>
+			</tr>
+			<tr>
+				<td><img src = "myAPIPic.png"/></td><td><a id = "myLink" href="">My API</a></td>
+			</tr>
+        </table>
+    </div>
+	
+</body>
+
+</html>

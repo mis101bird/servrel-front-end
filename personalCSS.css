@@ -1,0 +1,90 @@
+#topBar {
+	width: 100%;
+	height: 12%;
+	background-color: #193441;
+	position: absolute;
+	top: 0;
+}
+
+#titleBar{
+	width: 72%;
+	height: 6%;
+	top: 12%;
+	left: 28%;
+	background-color: #91AA9D;
+	position: absolute;
+	border: 2px #91AA9D solid; 
+	font-family: Calibri; 
+	font-weight: bold;
+	text-align: center;
+	font-size: 40px;
+	line-height: 32px;
+	color: #3E606F;
+	//z-index: 2;
+}
+
+#top_name {
+	position: absolute;
+	height: 80%;
+	top: 10%;
+	left: 50px;
+}
+
+#flotTag {
+	background: url("tag_arrow.png") no-repeat scroll left top;
+	width: 31px;
+	height: 26px;
+	position: absolute;
+	top: 80%;
+	left: 100%;
+	margin: 0 0 0 -35px;
+	overflow: hidden;
+}
+
+#pageLink {
+	position: relative;
+	width: 155px;
+	left: 33px;
+	background-color: #3E606F;
+	font-size: 20px;
+}
+
+#pageLink td {
+	padding: 1px;
+	line-height: 15px;
+	vertical-align: middle;
+}
+
+#pageLink img {
+	margin: 2px 5px 2px 3px;
+}
+
+#pageLink a {
+	color: white;
+	text-decoration: none;
+}
+
+body .container {
+	position: absolute;
+	width: 18%;
+	top: 15%;
+	left: 6%;
+}
+
+body .container .list-group-item {
+	width: 100%;
+	cursor: pointer;
+	font-size: 22px;
+}
+
+body .container .list-group-item:hover {
+	background-color: #EDEDED;
+}
+
+body .container .list-group-item.active {
+	background-color: #3E606F;
+}
+
+body .container .list-group-item.active:hover {
+	background-color: #3E606F;
+}

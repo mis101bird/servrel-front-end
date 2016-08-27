@@ -1,0 +1,37 @@
+<HTML>
+<head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.pack.js"></script>
+	<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+</head>
+<BODY>
+<p>用form action登入：</p>
+<FORM action="http://140.121.197.135:7778/servrel/login?account=soselab401&password=soselab401" method="post">
+	名字：<INPUT name="myname" size=10 maxlength=20 value="蕭亞軒"><P>
+	密碼：<INPUT name="passwd" type=password size=8 maxlength=8><P>
+	<INPUT type="submit" value="送出表單">
+</FORM>
+<p>用Ajax登入：</p>
+<form id="login" class="myForm" method="get" action="JavaScript:logIn()">
+			<pre>Account: 	<input type = "text" name = "account"></pre>
+			<pre>Password: 	<input type = "password" name = "password"></pre>	
+			<input class="btn" type="submit" value="Log In">
+		</form>
+<script>
+	function logIn(){
+			
+			//var site = "http://bluemix-siri.mybluemix.net/login?account=" + acc + "&password=" + pass;
+			var site = "http://140.121.197.135:7778/servrel/login";
+			
+			$.post(site, {"account": "soselab401", "password": "soselab401"}, function(result) {
+				console.log("post: " + JSON.stringify(result));
+				if(result.code == "200"){
+					
+				}
+			}, "json");
+		}
+
+</script>
+
+</BODY>
+</HTML>

@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta charset="utf-8">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>workspace</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="scriptStyle.css">
+    <link rel="stylesheet" type="text/css" href="wstyle.css">
+	<link rel="stylesheet" type="text/css" href="personalCSS.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.pack.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="layer-v2.3/layer/layer.js"></script>
+    <script type="text/javascript" src="WdrawBall.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+        var root = {
+            "id": "",
+            "name": "root"
+        };
+
+        function getDraw() {
+            var width = "95%";
+            var height = "95%";
+            var svg = d3.select("#visualization2").append("svg")
+                .attr("width", 800)
+                .attr("height", 800)
+                .append("g")
+                .attr("transform", function(d) {
+                    return "translate(" + 400 + "," + 400 + ")";
+                });
+            /*var svg = d3.select("#visualization").append("svg")
+                               .attr("width", width)
+                               .attr("height", height)
+                			;*/
+            return svg;
+        }
+        var countballs = 1;
+        var countLogo = 0;
+        var svg;
+
+        function opendata() {
+
+            if (countLogo == 0) {
+                svg = getDraw();
+            }
+            /*$.get("http://140.121.197.137:8080/servrel/workspace/project", { project:"place" },
+                			  function(data){
+                				alert("Data Loaded: " + data);
+                			  });*/
+            $.getJSON("http://140.121.197.135:7778/servrel/workspace/project?project=test", function(data) {
+                console.log(data);
+            });
+            drawBall(svg, countballs, 200, "rome2rio_searchNearPlace.json", "https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium");
+            countballs++;
+            countLogo++;
+        }
+
+        function newproject() {
+            d3.select("svg").remove();
+            countballs = 1;
+            countLogo = 0;
+            opendata();
+
+        }
+
+        function newgraph() {
+            root = {
+                "id": "",
+                "name": "root",
+                "visible": 0
+            };
+            console.log(root);
+            d3.select("svg").remove();
+            countballs = 1;
+            countLogo = 0;
+            //opendata();
+
+        }
+
+        function savedata() {
+            //$('[data-toggle="popover"]').popover(); 
+            var con = "<form action='http://140.121.197.135:7778/servrel/workspace/project?project=projectname%data=root' method='post'><input type='text' data-provide='typeahead' id='projectname'><input class='btn btn-primary' type='submit' value='OK'></form>";
+            $('#Save').popover({
+                title: 'Project Name:',
+                trigger: 'click',
+                html: true,
+                content: con,
+            });
+            console.log(root);
+            // alert(root);				
+        }
+        var graphSize = 1;
+        $(document).ready(function() {
+            if (localStorage.userID == undefined) {
+                window.location.assign("login.html");
+            }
+
+            $("#flotTag").hover(function() {
+                $(this).animate({
+                    margin: "-10px 0 0 -185px",
+                    width: "185px",
+                    height: "130px"
+                }, "fast");
+            }, function() {
+                $(this).animate({
+                    margin: "0 0 0 -35px",
+                    width: "31px",
+                    height: "26px"
+                }, "fast");
+            });
+
+            $("#titleBar").click(function() {
+                if (graphSize % 2 == 0) {
+                    $("#saveButton").css({
+                        width: "100%",
+                        left: "0%"
+                    });
+                } else {
+                    $("#saveButton").css({
+                        width: "72%",
+                        left: "28%"
+                    });
+                }
+                $("#saveButton").slideToggle("normal");
+            });
+
+            $("#showGraph").bind("click", function(e) {
+                e.stopPropagation();
+                if (graphSize % 2 == 1) {
+					$("#titleBar").animate({
+                        width: "100%",
+                        left: "0%",
+                    }, "normal");
+                    $("#visualization2").animate({
+                        width: "100%",
+                        left: "0%"
+                    }, "normal");
+                    $("#saveButton").animate({
+                        width: "100%",
+                        left: "0%"
+                    }, "normal");
+                } else {
+                    $("#titleBar").animate({
+                        width: "72%",
+                        left: "28%"
+                    }, "normal");
+                    $("#visualization2").animate({
+                        width: "72%",
+                        left: "28%"
+                    }, "normal");
+                    $("#saveButton").animate({
+                        width: "72%",
+                        left: "28%"
+                    }, "normal");
+                }
+                graphSize++;
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="topBar">
+        <a href="mixList.html" title="index"><img id="top_name" src="title.jpg" alt="picture" /></a>
+    </div>
+    <div id="titleBar"><img id="showGraph" src="showGraph.png"></img>Service Graph</div>
+    <div id="saveButton">
+        <button type="button" class="saveBtn" id="New" onclick='newgraph()'>New</button>
+        <button type="button" class="saveBtn" id="Open">Open</button>
+        <button type="button" class="saveBtn" data-placement="bottom" data-toggle="popover" id="Save" onclick='savedata()'>Save</button>
+        <button type="button" class="saveBtn" id="SaveAs">Save As</button>
+    </div>
+	
+	
+	<div class="container">
+        <h2>Workspace</h2>
+		<ul class="list-group" id="classList">
+			<li class="list-group-item" onclick='newproject()'>Place</li>
+            <li class="list-group-item" onclick='newproject()'>Project 2</li>
+            <li class="list-group-item" onclick='newproject()'>Project 3</li>
+            <li class="list-group-item" onclick='newproject()'>Project 4</li>
+			<li class="list-group-item" onclick='newproject()'>Project 5</li>
+			<li class="list-group-item" onclick='newproject()'>Project 6</li>
+        </ul>
+    </div>
+	
+    <div id="visualization2" class="draw" ondragover="dragoverHandler(event)" ondrop="dropHandler(event)">
+    </div>
+    <div id="flotTag">
+        <table id="pageLink">
+            <tr>
+                <td><img src="accountPic.png" /></td>
+                <td><a id="accLink" href="login.html">Account</a></td>
+            </tr>
+            <tr>
+                <td><img src="workPic.png" /></td>
+                <td><a id="workLink" href="workspace.html">Workspace</a></td>
+            </tr>
+            <tr>
+                <td><img src="favoritePic.png" /></td>
+                <td><a id="favLink" href="favorite.html">Favorite API</a></td>
+            </tr>
+            <tr>
+                <td><img src="myAPIPic.png" /></td>
+                <td><a id="myLink" href="MyAPI.html">My API</a></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
