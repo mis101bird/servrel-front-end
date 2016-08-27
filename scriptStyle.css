@@ -175,32 +175,28 @@ td{ padding: 0px; }
 .apiblock #tabs li {
 	float: left;
 	//position: relative;
-	margin: 0 0 -1px 0.6px;
-	border: 1px #91AA9D solid;
+	margin: 0 0 -1.5px 0;
+	border: 0.5px #FFFFFF solid;
 	background: #91AA9D;
 	color: white;
 	font-size: 26px;
 	font-family: Calibri;
 	text-align: center;
-	width: 24.5%;
+	width: 24.9%;
 	cursor: pointer;
 	border-radius: 5px 5px 0 0;
 }
 .apiblock #tabs li.active {
 	background: #3E606F;
-	border: 0.5px #FFFFFF solid;
-	padding-bottom: 1px;
-	border-bottom: none;
+	border-bottom: 1px #FFFFFF solid;
 }
 .apiblock #tabs li.hover{
 	background: #9DCBBA;
-	border: 0.5px #9DCBBA solid;
 }
 .apiblock  #tabContent{
 	clear: both;
 	border: 1px solid #DDD;
 	border-bottom: none;
-	border-top: none;
 	position: relative;
 	width: 99.5%;
 	height: 610px;
