@@ -443,14 +443,18 @@
 
 					$('#favorimg').click(function() {
 						$(this).attr("src", "addfavor.png");
-						var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><select id='selectClass'>";
+						var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
+						
+						
+						//con += "<option>1</option><option>2</option>"
+						
 						
 						var site = "http://140.121.197.135:7778/servrel/favorite";
 						$.getJSON(site, function(result) {
 							$.each(result, function() {
 								con += "<option value='" + this + "'>" + this + "</option>";
 							});
-							con += "<option value='newCategory'>create a new category</option><input type='text' id='newClass'><input class='favorOK' type='submit' value='OK'></form>";
+							con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name'></div><input class='favorOK' type='submit' value='OK'></form>";
 							
 							layer.tips(con, this, {
 								tips: [3, '#3BA99C'],
@@ -471,15 +475,6 @@
 								else{
 									$("#newClass").hide();
 								}
-								/*switch (parseInt($(this).val())){
-									case 0: 
-										$("#newClass").show();
-										break;
-									case 1: 
-										$("#newClass").hide();   
-										break;
-									
-								}*/
 							});
 							
 							
