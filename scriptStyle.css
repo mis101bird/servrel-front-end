@@ -310,7 +310,7 @@ body .mySkin .layui-layer-content #wfInfo img{
 
 body .mySkin .layui-layer-content #APItest{
 	border: 1px black solid;
-	width: 80%;
+	width: 90%;
 	font-size: 16px;
 	text-align: center;
 	margin: 2%;
@@ -320,8 +320,17 @@ body .mySkin .layui-layer-content #APItest{
 	word-break: break-all;
 }
 
-body .mySkin .layui-layer-content #APItest input{
+body .mySkin .layui-layer-content #APItest input[type="text"]{
 	margin: 1%;
+}
+
+body .mySkin .layui-layer-content #APItest .popTestbtn,.popCodebtn{
+	width: 80px;
+	margin: 3px 0 3px 0;
+	letter-spacing: 0.5px;
+	border: 1px #0A090C solid;
+	background-color: #0A090C;
+	color: #F0EDEE;
 }
 		  
 body .mySkin .layui-layer-content #APItest .popTestResult{

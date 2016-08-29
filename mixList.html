@@ -408,23 +408,22 @@
         }
 
         function popWindow(apiid) {
-			console.log("pop ID->" + apiid);
             var site = "http://140.121.197.135:7778/servrel/api/info?id=" + apiid;
 			$.post(site, function(data) {
                 var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
 
                 var para = data.request;
-                show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;text-align:left;padding-left:1%;'>";
+                show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;width:10%;'>param</td><td style='width:70%;text-align:left;padding-left:1%;'>";
 
                 $.each(para, function() {
                     if (this.testData != undefined) {
-                        show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.testData.value + "'><br>";
+                        show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.testData + "'><br>";
                     } else {
                         show += this.name + ": <input type='text' id='" + apiid + "_pop_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
                     }
                 });
 
-                show += "</td><td><input type='button' id='popTestBtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
+                show += "</td><td><input type='button' class='popTestbtn' id='popTestBtn_" + apiid + "' value='test'><br><input type='button' class='popCodebtn' id='popCodebtn_" + apiid + "' value='codegen'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
 
                 layer.open({
                     type: 1,
@@ -438,22 +437,40 @@
 
                 var testbtn = "#popTestBtn_" + apiid;
                 $(testbtn).on("click", function() {
-                    var site = data.Info.httpMethod + "://" + data.Info.hostUrl + data.Info.path + "?";
-                    var n = 0;
-                    $.each(para, function() {
-                        if (n != 0) {
-                            site += "&";
-                        }
-                        var input = $("#" + apiid + "_pop_" + this.name).val();
-                        //console.log(this.name + ":" + );
-                        site += this.name + "=" + input;
-                        n++;
-                    });
-                    console.log("site: " + site);
-                    $.getJSON(site, function(result) {
+                    var site = data.Info.hostUrl + data.Info.path;
+					var n = 0;
+					$.each(para, function() {
+						if(this.parameterpath == "query"){
+							if (n != 0) {
+								site += "&";
+							}
+							else{
+								site += "?";
+							}
+							var input = $("#" + apiid + "_" + this.name).val();
+							site += this.name + "=" + input;
+							n++;
+						}
+						else if(this.parameterpath == "path"){
+							var input = $("#" + apiid + "_" + this.name).val();
+							var repath = "{" + this.name + "}";
+							site = site.replace(repath, input);
+						}
+						
+					});
+					console.log("site: " + site);
+					
+					$.ajax({
+						url: site,
+						method: data.Info.httpMethod,
+					}).done(function(result){
+						$("#popTest_" + apiid).html(JSON.stringify(result));
+					});
+					
+                    /*$.getJSON(site, function(result) {
                         console.log(result);
                         $("#popTest_" + apiid).html(JSON.stringify(result));
-                    });
+                    });*/
                 });
 				
 				if(localStorage.userID != undefined){
@@ -510,10 +527,6 @@
             d3.event.stopPropagation();
         }
 
-
-        //{ "Info": { "name": "Government event Search in Taiwan", "introduction":"This API allows you to search events from Taiwan culture government.", "hostUrl": "cloud.culture.tw", "path": "/frontsite/opendata/activityOpenDataJsonAction.do", "httpMethod": "http", "contentType": "json", "apiEndpoint": "http://cloud.culture.tw/frontsite/opendata/openCmsAction.do?method=goCMSList&menuId=10201", "favorpeople": "8", "workspacepeople": "45" }, "requests": [{ "name": "lat", "description":"the events' latitude", "parameterpath": "query", "testData": { "type": "string", "value": "25.051345" } },{ "name": "lon", "description":"the events' lontitude", "parameterpath": "query", "testData": { "type": "string", "value": "121.549569" }}] }
-
-
         function showInfo(data, apiid) {
             //<p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p>
 			var show = "<div><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
@@ -535,40 +548,61 @@
 
             var testbtn = "#testbtn_" + apiid;
             $(testbtn).click(function() {
-
-                var site = data.Info.hostUrl + data.Info.path + "?";
+                var site = data.Info.hostUrl + data.Info.path;
                 var n = 0;
                 $.each(para, function() {
-                    if (n != 0) {
-                        site += "&";
-                    }
-                    var input = $("#" + apiid + "_" + this.name).val();
-                    site += this.name + "=" + input;
-                    n++;
+					if(this.parameterpath == "query"){
+						if (n != 0) {
+							site += "&";
+						}
+						else{
+							site += "?";
+						}
+						var input = $("#" + apiid + "_" + this.name).val();
+						site += this.name + "=" + input;
+						n++;
+					}
+					else if(this.parameterpath == "path"){
+						var input = $("#" + apiid + "_" + this.name).val();
+						var repath = "{" + this.name + "}";
+						site = site.replace(repath, input);
+					}
+					
                 });
                 console.log("site: " + site);
-                $.getJSON(site, function(result) {
+				/*
+					headers: {
+						'Authorization': 'Bearer <jwt token>',
+						'some-other-header': 'some value'
+					}
+				*/
+				$.ajax({
+					url: site,
+					method: data.Info.httpMethod,
+					
+				}).done(function(result){
+					$("#test_" + apiid).html(JSON.stringify(result));
+				});
+				
+				
+				
+				
+				
+                /*$.getJSON(site, function(result) {
                     console.log(result);
                     $("#test_" + apiid).html(JSON.stringify(result));
-                });
+                });*/
             });
 
         }
 
         function getInfo(apiid, id) {
-            /*var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
-            $.getJSON(site, function(result) {
-                console.log(site);
-                showInfo(result, id);
-            });*/
-			
-			var sitepp = "http://140.121.197.135:7778/servrel/api/info?id=" + id;
-			console.log(sitepp);
-			$.post(sitepp, function(result) {
+			var site = "http://140.121.197.135:7778/servrel/api/info?id=" + id;
+			console.log(site);
+			$.post(site, function(result) {
 				console.log("post: " + JSON.stringify(result));
 				showInfo(result, id);
 			}, "json");
-			
 			
         }
 
