@@ -485,14 +485,17 @@
 								
 								if($("#selectClass").val() != "newCategory"){
 									$("#newClass").hide();
+									$("#newClass").val("no");
 								}
 									
 								$("#selectClass").change(function(){
 									if($("#selectClass").val() == "newCategory"){
+										$("#newClass").val("");
 										$("#newClass").show();
 									}
 									else{
 										$("#newClass").hide();
+										$("#newClass").val("no");
 									}
 								});
 							
