@@ -408,6 +408,7 @@
         }
 
         function popWindow(apiid) {
+			console.log("pop ID->" + apiid);
             var site = "http://140.121.197.135:7778/servrel/api/info?id=" + apiid;
 			$.post(site, function(data) {
                 var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";

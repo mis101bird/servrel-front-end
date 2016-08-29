@@ -61,16 +61,6 @@
 
 
     <script>
-        function hasPic(pic) {
-            /*if (pic == "")
-                return "SERVREL.png";
-            else
-                return pic;*/
-			return "SERVREL.png";
-        }
-
-        var data = '[{"favorpeople":"8","name":"Youtube_captionVideo","id":"197","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Youtube_playlist","id":"198","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"ahmedakhanGameInformation_Search","id":"1","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arrivalLocation_British_Air_FlightInformationServiceAPI","id":"2","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"arriva_flightNumber_British_Air_FlightInformationServiceAPI","id":"3","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchBook","id":"4","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMap","id":"5","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchMusic","id":"6","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium","workspacepeople":"6"},{"favorpeople":"8","name":"AustraliaNationalLibrary_SearchPicture","id":"7","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_list","id":"8","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium","workspacepeople":"6"},{"favorpeople":"8","name":"Bandsintown_artist_event_search_by_location","id":"9","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium","workspacepeople":"6"},{"favorpeople":"8","name":"bandsintown_artist_profile","id":"10","pic":"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium","workspacepeople":"6"}]';
-
         function popWindow(apiid) {
             var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
             $.getJSON(site, function(data) {
@@ -122,8 +112,6 @@
             });
         }
 		
-		var cate = '["flight","food"]';
-		
 		function showCategory(){
 			var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
 			console.log(site);
@@ -137,20 +125,12 @@
 				showFavoriteList();
             });
 			
-			/*var list = "";
-			var c = JSON.parse(cate);
-			$.each(c, function() {
-				list += "<li class='list-group-item' id='" + this + "'>" + this + "</li>";
-			});
-			$("#classList").html(list);*/
-			
 		}
 		
 		function showFavoriteList(){
 			$(".list-group-item").click(function() {
                 $("li").filter('.active').removeClass('active');
                 $(this).addClass('active').removeClass('hover');
-                
                 
 				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + this.id + "&userID=" + localStorage.userID;
 				console.log("test: " + site);
@@ -160,7 +140,7 @@
 					var a = new Array();
 					$.each(result, function() {
 						a = (this.api).split(".json", 1);
-						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + a[0] + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id='d_" + this.id + "' title='delete " + a[0] + "'></td></tr>";
+						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + this.img + "></td><td style='width:80%;'><h3>" + a[0] + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id='d_" + this.id + "' title='delete " + a[0] + "'></td></tr>";
 					});
 					lang += "</tbody></table>";
 
@@ -187,7 +167,6 @@
 						console.log("id: "+ apiid);
 						console.log("site: "+ site);
 						
-						
 						$.post(site, function(result) {
 							console.log("post: " + JSON.stringify(result));
 							if(result.code == "200"){
@@ -199,19 +178,7 @@
 					});
 					
 				});
-			});	
-				/*var lang = "<table id='favor' rules='rows'><tbody>";
-				var json = JSON.parse(data);
-                $.each(json, function() {
-                    lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.name + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + this.name + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id=" + this.id + "></td></tr>";
-
-                });
-                lang += "</tbody></table>";
-
-                $('#favorAPI').html(lang);
-                $('#favorAPI').css("display", "none");
-                $('#favorAPI').slideDown("normal");*/
-
+			});
 			
             
 		}
@@ -279,7 +246,6 @@
             </tr>
         </table>
     </div>
-
 
 </body>
 
