@@ -447,12 +447,12 @@
 							else{
 								site += "?";
 							}
-							var input = $("#" + apiid + "_" + this.name).val();
+							var input = $("#" + apiid + "_pop_" + this.name).val();
 							site += this.name + "=" + input;
 							n++;
 						}
 						else if(this.parameterpath == "path"){
-							var input = $("#" + apiid + "_" + this.name).val();
+							var input = $("#" + apiid + "_pop_" + this.name).val();
 							var repath = "{" + this.name + "}";
 							site = site.replace(repath, input);
 						}
