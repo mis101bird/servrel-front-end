@@ -380,9 +380,31 @@
             // alert(root);				
         }
 
-        function addFavorAPI() {
+        function addFavorAPI(apiName) {
             var cate = $("#selectClass").val();
-
+			var newName;
+			console.log("name: " + apiName);
+			console.log("class: " + cate);
+			if(cate == "newCategory"){
+				newName = $("#newClass").val();	
+				var site = "http://140.121.197.137:8080/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
+				$.post(site, function(result) {
+					console.log("addAPI: " + JSON.stringify(result));
+					if(result.code == "200"){
+						
+					}
+				}, "json");
+			}
+			else{
+				var site = "http://140.121.197.137:8080/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
+				$.post(site, function(result) {
+					console.log("addAPI: " + JSON.stringify(result));
+					if(result.code == "200"){
+						
+					}
+				}, "json");
+			}
+			
         }
 
         function popWindow(apiid) {
@@ -442,20 +464,15 @@
 					});
 
 					$('#favorimg').click(function() {
-						//$(this).attr("src", "addfavor.png");
-						var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
+						var con = "<form action='JavaScript:addFavorAPI(\"" + data.api + "\")'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
 						
-						
-						//con += "<option>1</option><option>2</option>"
-						
-						
-						var site = "http://140.121.197.135:7778/servrel/favorite";
+						var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
 						$.getJSON(site, function(result) {
 							$.when($.each(result, function() {
 								con += "<option value='" + this + "'>" + this + "</option>";
 								
 							})).done( function(){ 
-								con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name'></div><input class='favorOK' type='submit' value='OK'></form>";
+								con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name' required></div><input class='favorOK' type='submit' value='OK'></form>";
 								
 								
 								layer.tips(con, ("#favorimg"), {
@@ -477,30 +494,16 @@
 									else{
 										$("#newClass").hide();
 									}
-									console.log("77-> " + $("#selectClass").val());
 								});
 							
 							});
 							
-							//$.when(wait()).done(function(){ alert("哈哈，成功了！"); })
-							
-							/*$blocks.each(function(i, elm) {
-								$(elm).fadeOut(200, function() {
-									$(elm).remove();
-								});
-							}).promise().done( function(){ alert("All was done"); } );*/
-							
-							
-							
-							
-							
 						});
-						
 						
 					});
 				}
             }, "json");
-            //d3.event.stopPropagation();
+            d3.event.stopPropagation();
         }
 
 

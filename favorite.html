@@ -125,9 +125,10 @@
 		var cate = '["flight","food"]';
 		
 		function showCategory(){
-			var site = "http://140.121.197.135:7778/servrel/favorite";
+			var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
+			console.log(site);
             $.getJSON(site, function(result) {
-                console.log(result);
+                console.log(JSON.stringify(result));
 				var list = "";
                 $.each(result, function() {
 					list += "<li class='list-group-item' id='" + this + "'>" + this + "</li>";
@@ -159,7 +160,7 @@
 					var a = new Array();
 					$.each(result, function() {
 						a = (this.api).split(".json", 1);
-						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + a[0] + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id='d_" + this.api + "'></td></tr>";
+						lang += "<tr class='favorAPITitle' id=favorAPITitle_" + this.id + "><td style='width:12%;text-align:center;'><img id=" + this.id + " class='logo' title=" + this.api + " src=" + hasPic(this.pic) + "></td><td style='width:80%;'><h3>" + a[0] + "</h3></td><td style='width:8%;text-align:center;'><img src='trash.png'style='width:35px;cursor:pointer;' class='delete' id='d_" + this.id + "' title='delete " + a[0] + "'></td></tr>";
 					});
 					lang += "</tbody></table>";
 
@@ -178,13 +179,20 @@
 					});
 					$('.delete').click(function(e) {
 						e.stopPropagation();
-						var apiName = (this.id).substring(2);
-						var site = "http://140.121.197.135:7778/servrel/favorite?delete=true&api=" + apiName;
+						var apiName = (this.title).substring(7) + ".json";
+						var apiid = (this.id).substring(2);
+						var site = "http://140.121.197.135:7778/servrel/favorite?delete=true&api=" + apiName + "&userID=" + localStorage.userID;
+						
+						console.log("name: "+ apiName);
+						console.log("id: "+ apiid);
+						console.log("site: "+ site);
+						
+						
 						$.post(site, function(result) {
 							console.log("post: " + JSON.stringify(result));
 							if(result.code == "200"){
-								var id = "#favorAPITitle_" + this.id;
-								$(id).remove();
+								var titleid = "#favorAPITitle_" + apiid;
+								$(titleid).remove();
 							}
 						}, "json");
 						
