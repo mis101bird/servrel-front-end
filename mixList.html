@@ -386,11 +386,11 @@
         }
 
         function popWindow(apiid) {
-            var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
-			$.getJSON(site, function(data) {
-                var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.Info.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.Info.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
+            var site = "http://140.121.197.135:7778/servrel/api/info?id=" + apiid;
+			$.post(site, function(data) {
+                var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
 
-                var para = data.requests;
+                var para = data.request;
                 show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;text-align:left;padding-left:1%;'>";
 
                 $.each(para, function() {
@@ -442,7 +442,7 @@
 					});
 
 					$('#favorimg').click(function() {
-						$(this).attr("src", "addfavor.png");
+						//$(this).attr("src", "addfavor.png");
 						var con = "<form action='JavaScript:addFavorAPI()'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
 						
 						
@@ -451,31 +451,47 @@
 						
 						var site = "http://140.121.197.135:7778/servrel/favorite";
 						$.getJSON(site, function(result) {
-							$.each(result, function() {
+							$.when($.each(result, function() {
 								con += "<option value='" + this + "'>" + this + "</option>";
-							});
-							con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name'></div><input class='favorOK' type='submit' value='OK'></form>";
-							
-							layer.tips(con, this, {
-								tips: [3, '#3BA99C'],
-								time: 0,
-								skin: 'favorTip',
-								shade: [0, '#FFFFF'],
-								shadeClose: true
-							});
-							
-							if($("#selectClass").val() != "newCategory"){
-								$("#newClass").hide();
-							}
 								
-							$("#selectClass").change(function(){
-								if($("#selectClass").val() == "newCategory"){
-									$("#newClass").show();
-								}
-								else{
+							})).done( function(){ 
+								con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name'></div><input class='favorOK' type='submit' value='OK'></form>";
+								
+								
+								layer.tips(con, ("#favorimg"), {
+									tips: [3, '#3BA99C'],
+									time: 0,
+									skin: 'favorTip',
+									shade: [0, '#FFFFF'],
+									shadeClose: true
+								});
+								
+								if($("#selectClass").val() != "newCategory"){
 									$("#newClass").hide();
 								}
+									
+								$("#selectClass").change(function(){
+									if($("#selectClass").val() == "newCategory"){
+										$("#newClass").show();
+									}
+									else{
+										$("#newClass").hide();
+									}
+									console.log("77-> " + $("#selectClass").val());
+								});
+							
 							});
+							
+							//$.when(wait()).done(function(){ alert("哈哈，成功了！"); })
+							
+							/*$blocks.each(function(i, elm) {
+								$(elm).fadeOut(200, function() {
+									$(elm).remove();
+								});
+							}).promise().done( function(){ alert("All was done"); } );*/
+							
+							
+							
 							
 							
 						});
@@ -483,7 +499,7 @@
 						
 					});
 				}
-            });
+            }, "json");
             //d3.event.stopPropagation();
         }
 
@@ -492,14 +508,14 @@
 
 
         function showInfo(data, apiid) {
-            var show = "<div><p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "<br><span class='item'>Favorite people : </span>" + data.Info.favorpeople + "<br><span class='item'>Workspace people : </span>" + data.Info.workspacepeople + "</p></div>";
+            var show = "<div><p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
 
-            var para = data.requests;
+            var para = data.request;
             show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;padding-left:1%;'><div style='height:70px;overflow:auto;text-align:left;'>";
 
             $.each(para, function() {
                 if (this.testData != undefined) {
-                    show += this.name + ": <input type='text' id='" + apiid + "_" + this.name + "' value='" + this.testData.value + "'><br>";
+                    show += this.name + ": <input type='text' id='" + apiid + "_" + this.name + "' value='" + this.testData + "'><br>";
                 } else {
                     show += this.name + ": <input type='text' id='" + apiid + "_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
                 }
@@ -532,11 +548,20 @@
         }
 
         function getInfo(apiid, id) {
-            var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
+            /*var site = "http://bluemix-siri.mybluemix.net/api/info?id=" + apiid;
             $.getJSON(site, function(result) {
                 console.log(site);
                 showInfo(result, id);
-            });
+            });*/
+			
+			var sitepp = "http://140.121.197.135:7778/servrel/api/info?id=" + id;
+			console.log(sitepp);
+			$.post(sitepp, function(result) {
+				console.log("post: " + JSON.stringify(result));
+				showInfo(result, id);
+			}, "json");
+			
+			
         }
 
         function getRelativeAPI(data, type, apiid) {
