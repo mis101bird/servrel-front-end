@@ -183,7 +183,7 @@
 			var pass = $('input[name="password"]').val();
 			
 			//var site = "http://bluemix-siri.mybluemix.net/login?account=" + acc + "&password=" + pass;
-			var site = "http://140.121.197.135:7778/servrel/login";
+			var site = "http://140.121.197.135:7778/servrel/login?account=" + acc + "&password=" + pass;
 			//var site = "http://140.121.197.135:7778/servrel/login?account=" + acc + "&password=" + pass;
 			
 			
@@ -232,7 +232,7 @@
 			
 			
 			
-			$.post(site, {"account": acc, "password": pass}, function(result) {
+			$.post(site, function(result) {
 				console.log("post: " + JSON.stringify(result));
 				if(result.code == "200"){
 					alert("Success");
