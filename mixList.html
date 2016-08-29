@@ -387,7 +387,7 @@
 			console.log("class: " + cate);
 			if(cate == "newCategory"){
 				newName = $("#newClass").val();	
-				var site = "http://140.121.197.137:8080/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
+				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
 				$.post(site, function(result) {
 					console.log("addAPI: " + JSON.stringify(result));
 					if(result.code == "200"){
@@ -396,7 +396,7 @@
 				}, "json");
 			}
 			else{
-				var site = "http://140.121.197.137:8080/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
+				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
 				$.post(site, function(result) {
 					console.log("addAPI: " + JSON.stringify(result));
 					if(result.code == "200"){
