@@ -152,7 +152,7 @@
                 $(this).addClass('active').removeClass('hover');
                 
                 
-				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + this.id;
+				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + this.id + "&userID=" + localStorage.userID;
 				console.log("test: " + site);
 				$.getJSON(site, function(result) {
 					console.log(result);
