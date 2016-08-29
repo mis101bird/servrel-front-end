@@ -242,7 +242,7 @@ td{ padding: 0px; }
 }
 .apiblock #tabContent li #APItest{
 	border: 1px black solid;
-	width: 80%;
+	width: 95%;
 	font-size: 16px;
 	text-align: center;
 	margin: 2% 0 2% 0;
@@ -252,14 +252,24 @@ td{ padding: 0px; }
 	word-break: break-all;
 }
 
-.apiblock #tabContent li #APItest input{
+.apiblock #tabContent li #APItest input[type="text"]{
 	margin: 1%;
+}
+
+.apiblock #tabContent li #APItest .testbtn,.codebtn{
+	width: 80px;
+	margin: 3px 0 3px 0;
+	letter-spacing: 0.5px;
+	border: 1px #0A090C solid;
+	background-color: #0A090C;
+	color: #F0EDEE;
 }
 		  
 .apiblock #tabContent li #APItest .testResult{
 	width: 98%;
 	height: 80px;
 	border: 1px gray dashed;
+	padding: 0.5%;
 	overflow: auto;
 }
 

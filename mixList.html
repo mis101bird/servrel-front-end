@@ -515,10 +515,11 @@
 
 
         function showInfo(data, apiid) {
-            var show = "<div><p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
+            //<p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p>
+			var show = "<div><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
 
             var para = data.request;
-            show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;'>param</td><td style='width:70%;padding-left:1%;'><div style='height:70px;overflow:auto;text-align:left;'>";
+            show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;width:10%;'>param</td><td style='width:70%;padding-left:1%;'><div style='height:70px;overflow:auto;text-align:left;'>";
 
             $.each(para, function() {
                 if (this.testData != undefined) {
@@ -527,7 +528,7 @@
                     show += this.name + ": <input type='text' id='" + apiid + "_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
                 }
             });
-            show += "</div></td><td><input type='button' id='testbtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;'>result</td><td colspan='2' style='padding:1%;'><div class='testResult' id='test_" + apiid + "' style='padding:0.5%;'></div></td>";
+            show += "</div></td><td><input type='button' class='testbtn' id='testbtn_" + apiid + "' value='test'><br><input type='button' class='codebtn' id='codebtn_" + apiid + "' value='codegen'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2' style='padding:1%;'><div class='testResult' id='test_" + apiid + "'></div></td>";
 
             var dataid = "#info_" + apiid;
             $(dataid).html(show);

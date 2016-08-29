@@ -286,6 +286,11 @@
 			if(localStorage.userID != undefined){
 				var con = "<div id='topBar'><a href='mixList.html' title='index'><img id='top_name' src='title.jpg' alt='picture'/></a></div><div id='accountBar'>My Account</div><div id = 'accPart'><div id='myInfo'>" + "Account: " + localStorage.userID + "<br><input id='logoutBtn' class='logoutbtn' type='button' value='Log Out'>" + "</div></div>" + "<div id='flotTag'><table id = 'pageLink'><tr><td><img src = 'accountPic.png'/></td><td><a id = 'accLink' href='login.html'>Account</a></td></tr><tr><td><img src = 'workPic.png'/></td><td><a id = 'workLink' href='workspace.html'>Workspace</a></td></tr><tr><td><img src = 'favoritePic.png'/></td><td><a id = 'favLink' href='favorite.html'>Favorite API</a></td></tr><tr><td><img src = 'myAPIPic.png'/></td><td><a id = 'myLink' href=''>My API</a></td></tr></table></div>";
 				$("body").html(con);
+				$("#flotTag").hover(function() {
+					$(this).animate({margin: "-10px 0 0 -185px", width: "185px", height: "130px"}, "fast");
+				}, function(){
+					$(this).animate({margin: "0 0 0 -35px", width: "31px", height: "26px"}, "fast");
+				});
 				logOut();
 			}
             
