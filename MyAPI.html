@@ -50,26 +50,32 @@
 			height: 50%;
 			top: 25%;
 		}
-		#manageAPI #modifyAPI{
+		#manageAPI #myAPIInfo{
 			position: relative;
+			width: 70%;
 			left: 5%;
+			font-size: 24px;
 			float: left;
 		}
-		#manageAPI #modifyAPI .item{
+		#manageAPI #myAPIInfo .item{
 			color: #3E606F;
 			font-weight: bold;
-			font-size: 20px;
+			font-size: 24px;
+		}
+		#manageAPI #modifyAPI{
+			position: relative;
+			width: 90%;
+			left: 5%;
+			top: 20px;
+			padding: 10px 0 0 8%;
+			border-top: 1px #D6D5C9 solid;
+			font-size: 24px;
+			clear: both;
 		}
 		#manageAPI #modifyAPI input{
-			width: 250px;
-			margin: 3px;
-			font-size: 18px;
-			padding: 0.8px;
-		}
-		#manageAPI #modifyAPI textarea{
-			width: 400px;
-			height: 110px;
-			margin-left: 10px;
+			font-size: 20px;
+			margin: 2px;
+			display: inline;
 		}
 		#manageAPI #modifyAPI #mBtn{
 			width: 85px;
@@ -100,7 +106,7 @@
 		$(".list-group-item").click(function() {
 			$("li").filter('.active').removeClass('active');
 			$(this).addClass('active').removeClass('hover');
-			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><form id='modifyAPI'><span class='item'>API name : </span><input type='text' value='Bandsintown artist event list'><br><span class='item'>Host URL : </span><input type='text' value='http://api.bandsintown.com'><br><span class='item'>Path : </span><input type='text' value='/artists/{artists}/events.json'><br><span class='item'>Http method : </span><input type='text' value='GET'><br><span class='item'>Content type : </span><input type='text' value='application/json;charset=utf-8'><br><span class='item'>API Home : </span><input type='text' value='http://www.bandsintown.com/api/requests#artists-get'><br><span class='item'>Introduction : </span><br><textarea>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.</textarea><br><input type='button' id='mBtn' value='Save'><input type='button' id='mBtn' value='Cancel'></form>";
+			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><div id='modifyAPI'>API Name: <input id='newAPIName' type='text' required><br>Icon: <input id='newAPIIcon' type='text'><br>Swagger: <input id='newAPIFile' type='file' required><br><input type='button' id='mBtn' value='Save'></div>";
 			
 			$('#manageAPI').html(con);
 			
