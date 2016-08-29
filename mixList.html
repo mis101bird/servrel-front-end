@@ -535,7 +535,7 @@
             var testbtn = "#testbtn_" + apiid;
             $(testbtn).click(function() {
 
-                var site = data.Info.httpMethod + "://" + data.Info.hostUrl + data.Info.path + "?";
+                var site = data.Info.hostUrl + data.Info.path + "?";
                 var n = 0;
                 $.each(para, function() {
                     if (n != 0) {
