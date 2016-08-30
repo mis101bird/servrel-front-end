@@ -259,7 +259,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                 d3.event.stopPropagation();
                 return;
             } else if (pop == 1) {
-                popWindow(d_id);
+                popWindow(d.dataid);
                 pop = 0;
                 console.log("pop");
                 console.log(pop);
