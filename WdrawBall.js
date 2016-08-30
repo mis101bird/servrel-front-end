@@ -1,4 +1,4 @@
-function drawBall(svg, countballs, d_id, d_title, d_src) {
+function drawBall(svg, countballs) {
     var R = 600; //圖像區域大小
     var duration = 1000; //動畫持續時間
     var index = 0; //節點編號
@@ -56,9 +56,9 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
         if (countballs == 1) {
             root.children = [];
         }
-        child = {
+        /* child = {
             "id": (100 * countballs).toString(),
-            "dataid": d_id,
+			"dataid":d_id,
             "name": d_title + (100 * countballs).toString(),
             "children": [{
                 "id": (100 * countballs + 1).toString(),
@@ -66,26 +66,26 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                 "mark": "comp",
                 "image": "comp.png",
                 "children": "",
-                "visible": 0
+				"visible":0
             }, {
                 "id": (100 * countballs + 2).toString(),
                 "name": "",
                 "mark": "pre",
                 "image": "pre.png",
                 "children": "",
-                "visible": 0
+				"visible":0
             }, {
                 "id": (100 * countballs + 3).toString(),
                 "name": "",
                 "mark": "post",
                 "image": "post.png",
                 "children": "",
-                "visible": 0
+				"visible":0
             }],
             "image": d_src,
-            "visible": 0
+			"visible":0
         };
-        root.children.push(child);
+        root.children.push(child);*/
 
         console.log(root);
         //root.children.forEach(collapse);
@@ -259,7 +259,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                 d3.event.stopPropagation();
                 return;
             } else if (pop == 1) {
-                popWindow(d.id);
+                popWindow(d_id);
                 pop = 0;
                 console.log("pop");
                 console.log(pop);

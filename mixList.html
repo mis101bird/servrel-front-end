@@ -175,12 +175,12 @@
         var isSearchAjax = false;
 
         $(document).ajaxStart(function() {
-			if (isSearchAjax == true) {
+            if (isSearchAjax == true) {
                 $("#load").show();
             }
         });
         $(document).ajaxStop(function() {
-			if (isSearchAjax == true) {
+            if (isSearchAjax == true) {
                 $("#load").hide();
                 $('#result').slideDown("normal");
                 isSearchAjax = false;
@@ -312,7 +312,20 @@
             countLogo++;
         }
 
+        var newGraph = 0;
+
         function newgraph() {
+            var con = "<form action='JavaScript:sendData()' method='get'><input type='text' data-provide='typeahead' name='projectname'><input class='btn btn-primary' type='submit' value='OK'><input class='btn btn-primary' type='submit' onclick='javascript:clearAll();return false;' value='Cancel'></form>";
+            newGraph = 1;
+            $('#New').popover({
+                title: 'Save as a project?:',
+                trigger: 'click',
+                html: true,
+                content: con,
+            });
+        }
+
+        function clearAll() {
             root = {
                 "id": "",
                 "name": "root",
@@ -322,7 +335,42 @@
             d3.select("svg").remove();
             countballs = 1;
             countLogo = 0;
+        }
 
+        function openProject() {
+            var list = "";
+            var site = "http://140.121.197.135:7778/servrel/workspace?userID=" + localStorage.userID;
+            $.getJSON(site, function(result) {
+                console.log(result);
+                $.each(result, function() {
+                    if (this != 200) {
+                        var ptname = this;
+                        ptname = ptname.substr(1, ptname.length - 2);
+                        console.log(ptname);
+                        var name = ptname.split(/,/);
+                        list += "<ul>";
+                        for (key in name) {
+                            name[key] = name[key].substr(1, name[key].length - 2);
+                            console.log(name[key]);
+                            if (name[key] != "") {
+                                list += "<li id='" + name[key] + "'>" + name[key] + "</li>";
+                            }
+                        }
+                        list += "</ul>";
+                    }
+                });
+                //$("#classList").html(list);
+                //opendata();
+                console.log(list);
+                $('#Open').popover({
+                    title: 'Project:',
+                    trigger: 'click',
+                    html: true,
+                    content: list,
+                });
+            });
+            //var con = "<form action='JavaScript:sendData()' method='get'><input type='text' data-provide='typeahead' name='projectname'><input class='btn btn-primary' type='submit' value='OK'><input class='btn btn-primary' type='submit' onclick='javascript:clearAll();return false;' value='Cancel'></form>";
+            newGraph = 1;
         }
 
         function savedata() {
@@ -342,17 +390,37 @@
             var ptname = $('input[name="projectname"]').val();
             var wsite = "http://140.121.197.135:7778/servrel/workspace/project";
             var dataroot = root.toSource();
+            //var dataroot=shallowStringify(root);
+
             /*$.post(wsite, 
 			      {"projectname": ptname, "data": dataroot},  
 				  function(data, status){alert("Data: " + data + "\nStatus: " + status);}				  
                   );*/
+
             console.log(dataroot);
-            $.ajax({
+            $.post(wsite, {
+                "project": ptname,
+                "data": dataroot,
+                "userID": localStorage.userID
+            }, function(result) {
+                console.log("post: " + JSON.stringify(result));
+                if (result.code == "200") {
+                    alert("Success");
+                } else {
+                    console.log("逆失敗惹");
+                }
+            }, "json");
+            if (newGraph == 1) {
+                clearAll();
+                newGraph = 0;
+            }
+            /* $.ajax({
                 type: "POST",
-                url: "http://140.121.197.137:8080/servrel/workspace/project",
+                url: "http://140.121.197.135:7778/servrel/workspace/project",
                 data: {
-                    projectname: ptname,
-                    data: dataroot
+                    project: ptname,
+                    data: dataroot,
+					userID:localStorage.userID
                 },
                 contentType: "application/json",
                 dataType: "json",
@@ -364,7 +432,37 @@
                     console.log("error");　
                     console.log(data);
                 }
-            });
+            });*/
+        }
+
+        function shallowStringify(obj, onlyProps, skipTypes) {
+            var objType = typeof(obj);
+            if (['function', 'undefined'].indexOf(objType) >= 0) {
+                return objType;
+            } else if (['string', 'number', 'boolean'].indexOf(objType) >= 0) {
+                return obj; // will toString
+            }
+            // objType == 'object'
+            var res = '{';
+            for (p in obj) { // property in object
+                if (typeof(onlyProps) !== 'undefined' && onlyProps) {
+                    // Only show property names as values may show too much noise.
+                    // After this you can trace more specific properties to debug
+                    res += p + ', ';
+                } else {
+                    var valType = typeof(obj[p]);
+                    if (typeof(skipTypes) == 'undefined') {
+                        skipTypes = ['function'];
+                    }
+                    if (skipTypes.indexOf(valType) >= 0) {
+                        res += p + ': ' + valType + ', ';
+                    } else {
+                        res += p + ': ' + obj[p] + ', ';
+                    }
+                }
+            }
+            res += '}';
+            return res;
         }
 
         function saveas() {
@@ -382,34 +480,33 @@
 
         function addFavorAPI(apiName) {
             var cate = $("#selectClass").val();
-			var newName;
-			console.log("name: " + apiName);
-			console.log("class: " + cate);
-			if(cate == "newCategory"){
-				newName = $("#newClass").val();	
-				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
-				$.post(site, function(result) {
-					console.log("addAPI: " + JSON.stringify(result));
-					if(result.code == "200"){
-						
-					}
-				}, "json");
-			}
-			else{
-				var site = "http://140.121.197.135:7778/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
-				$.post(site, function(result) {
-					console.log("addAPI: " + JSON.stringify(result));
-					if(result.code == "200"){
-						
-					}
-				}, "json");
-			}
-			
+            var newName;
+            console.log("name: " + apiName);
+            console.log("class: " + cate);
+            if (cate == "newCategory") {
+                newName = $("#newClass").val();
+                var site = "http://140.121.197.135:7778/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
+                $.post(site, function(result) {
+                    console.log("addAPI: " + JSON.stringify(result));
+                    if (result.code == "200") {
+
+                    }
+                }, "json");
+            } else {
+                var site = "http://140.121.197.135:7778/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
+                $.post(site, function(result) {
+                    console.log("addAPI: " + JSON.stringify(result));
+                    if (result.code == "200") {
+
+                    }
+                }, "json");
+            }
+
         }
 
         function popWindow(apiid) {
             var site = "http://140.121.197.135:7778/servrel/api/info?id=" + apiid;
-			$.post(site, function(data) {
+            $.post(site, function(data) {
                 var show = "<table id='wfInfo'><tr><td><img src='workspacepeople_title.png'></td><td>" + data.workspacepeople + "</td><td><img id='favorimg' src='favorpeople.png'></td><td>" + data.favorpeople + "</td></tr></table><p style='margin-top:40px;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p>";
 
                 var para = data.request;
@@ -438,98 +535,95 @@
                 var testbtn = "#popTestBtn_" + apiid;
                 $(testbtn).on("click", function() {
                     var site = data.Info.hostUrl + data.Info.path;
-					var n = 0;
-					$.each(para, function() {
-						if(this.parameterpath == "query"){
-							if (n != 0) {
-								site += "&";
-							}
-							else{
-								site += "?";
-							}
-							var input = $("#" + apiid + "_pop_" + this.name).val();
-							site += this.name + "=" + input;
-							n++;
-						}
-						else if(this.parameterpath == "path"){
-							var input = $("#" + apiid + "_pop_" + this.name).val();
-							var repath = "{" + this.name + "}";
-							site = site.replace(repath, input);
-						}
-						
-					});
-					console.log("site: " + site);
-					
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-					}).done(function(result){
-						$("#popTest_" + apiid).html(JSON.stringify(result));
-					});
-					
+                    var n = 0;
+                    $.each(para, function() {
+                        if (this.parameterpath == "query") {
+                            if (n != 0) {
+                                site += "&";
+                            } else {
+                                site += "?";
+                            }
+                            var input = $("#" + apiid + "_pop_" + this.name).val();
+                            site += this.name + "=" + input;
+                            n++;
+                        } else if (this.parameterpath == "path") {
+                            var input = $("#" + apiid + "_pop_" + this.name).val();
+                            var repath = "{" + this.name + "}";
+                            site = site.replace(repath, input);
+                        }
+
+                    });
+                    console.log("site: " + site);
+
+                    $.ajax({
+                        url: site,
+                        method: data.Info.httpMethod,
+                    }).done(function(result) {
+                        $("#popTest_" + apiid).html(JSON.stringify(result));
+                    });
+
                     /*$.getJSON(site, function(result) {
                         console.log(result);
                         $("#popTest_" + apiid).html(JSON.stringify(result));
                     });*/
                 });
-				
-				if(localStorage.userID != undefined){
-					$('#favorimg').hover(function() {
-						$(this).attr("src", "addfavor.png");
-						$(this).css("cursor", "pointer");
-					}, function() {
-						$(this).attr("src", "favorpeople.png");
-					});
 
-					$('#favorimg').click(function() {
-						var con = "<form action='JavaScript:addFavorAPI(\"" + data.api + "\")'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
-						
-						var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
-						$.getJSON(site, function(result) {
-							$.when($.each(result, function() {
-								con += "<option value='" + this + "'>" + this + "</option>";
-								
-							})).done( function(){ 
-								con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name' required></div><input class='favorOK' type='submit' value='OK'></form>";
-								
-								
-								layer.tips(con, ("#favorimg"), {
-									tips: [3, '#3BA99C'],
-									time: 0,
-									skin: 'favorTip',
-									shade: [0, '#FFFFF'],
-									shadeClose: true
-								});
-								
-								if($("#selectClass").val() != "newCategory"){
-									$("#newClass").hide();
-									$("#newClass").val("no");
-								}
-									
-								$("#selectClass").change(function(){
-									if($("#selectClass").val() == "newCategory"){
-										$("#newClass").val("");
-										$("#newClass").show();
-									}
-									else{
-										$("#newClass").hide();
-										$("#newClass").val("no");
-									}
-								});
-							
-							});
-							
-						});
-						
-					});
-				}
+                if (localStorage.userID != undefined) {
+                    $('#favorimg').hover(function() {
+                        $(this).attr("src", "addfavor.png");
+                        $(this).css("cursor", "pointer");
+                    }, function() {
+                        $(this).attr("src", "favorpeople.png");
+                    });
+
+                    $('#favorimg').click(function() {
+                        var con = "<form action='JavaScript:addFavorAPI(\"" + data.api + "\")'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
+
+                        var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
+                        $.getJSON(site, function(result) {
+                            $.when($.each(result, function() {
+                                con += "<option value='" + this + "'>" + this + "</option>";
+
+                            })).done(function() {
+                                con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name' required></div><input class='favorOK' type='submit' value='OK'></form>";
+
+
+                                layer.tips(con, ("#favorimg"), {
+                                    tips: [3, '#3BA99C'],
+                                    time: 0,
+                                    skin: 'favorTip',
+                                    shade: [0, '#FFFFF'],
+                                    shadeClose: true
+                                });
+
+                                if ($("#selectClass").val() != "newCategory") {
+                                    $("#newClass").hide();
+                                    $("#newClass").val("no");
+                                }
+
+                                $("#selectClass").change(function() {
+                                    if ($("#selectClass").val() == "newCategory") {
+                                        $("#newClass").val("");
+                                        $("#newClass").show();
+                                    } else {
+                                        $("#newClass").hide();
+                                        $("#newClass").val("no");
+                                    }
+                                });
+
+                            });
+
+                        });
+
+                    });
+                }
             }, "json");
             d3.event.stopPropagation();
         }
 
         function showInfo(data, apiid) {
             //<p style='font-size:36px;font-weight:bolder;margin: 6px 0 3px 0;'>API Information</p>
-			var show = "<div><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
+            var show = "<div><p style='margin: 0 0 2px 0;'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</p></div>";
 
             var para = data.request;
             show += "<table id='APItest' rules='rows'><tr><td style='border-right:1px black solid;width:10%;'>param</td><td style='width:70%;padding-left:1%;'><div style='height:70px;overflow:auto;text-align:left;'>";
@@ -551,43 +645,40 @@
                 var site = data.Info.hostUrl + data.Info.path;
                 var n = 0;
                 $.each(para, function() {
-					if(this.parameterpath == "query"){
-						if (n != 0) {
-							site += "&";
-						}
-						else{
-							site += "?";
-						}
-						var input = $("#" + apiid + "_" + this.name).val();
-						site += this.name + "=" + input;
-						n++;
-					}
-					else if(this.parameterpath == "path"){
-						var input = $("#" + apiid + "_" + this.name).val();
-						var repath = "{" + this.name + "}";
-						site = site.replace(repath, input);
-					}
-					
+                    if (this.parameterpath == "query") {
+                        if (n != 0) {
+                            site += "&";
+                        } else {
+                            site += "?";
+                        }
+                        var input = $("#" + apiid + "_" + this.name).val();
+                        site += this.name + "=" + input;
+                        n++;
+                    } else if (this.parameterpath == "path") {
+                        var input = $("#" + apiid + "_" + this.name).val();
+                        var repath = "{" + this.name + "}";
+                        site = site.replace(repath, input);
+                    }
+
                 });
                 console.log("site: " + site);
-				/*
-					headers: {
-						'Authorization': 'Bearer <jwt token>',
-						'some-other-header': 'some value'
-					}
-				*/
-				$.ajax({
-					url: site,
-					method: data.Info.httpMethod,
-					
-				}).done(function(result){
-					$("#test_" + apiid).html(JSON.stringify(result));
-				});
-				
-				
-				
-				
-				
+                /*
+                	headers: {
+                		'Authorization': 'Bearer <jwt token>',
+                		'some-other-header': 'some value'
+                	}
+                */
+                $.ajax({
+                    url: site,
+                    method: data.Info.httpMethod,
+
+                }).done(function(result) {
+                    $("#test_" + apiid).html(JSON.stringify(result));
+                });
+
+
+
+
                 /*$.getJSON(site, function(result) {
                     console.log(result);
                     $("#test_" + apiid).html(JSON.stringify(result));
@@ -597,13 +688,13 @@
         }
 
         function getInfo(apiid, id) {
-			var site = "http://140.121.197.135:7778/servrel/api/info?id=" + id;
-			console.log(site);
-			$.post(site, function(result) {
-				console.log("post: " + JSON.stringify(result));
-				showInfo(result, id);
-			}, "json");
-			
+            var site = "http://140.121.197.135:7778/servrel/api/info?id=" + id;
+            console.log(site);
+            $.post(site, function(result) {
+                console.log("post: " + JSON.stringify(result));
+                showInfo(result, id);
+            }, "json");
+
         }
 
         function getRelativeAPI(data, type, apiid) {
@@ -774,8 +865,8 @@
 
     <div id="graphBar"><img id="showGraph" src="showGraph.png"></img>Service Graph</div>
     <div id="saveButton">
-        <button type="button" class="saveBtn" id="New" onclick='newgraph()'>New</button>
-        <button type="button" class="saveBtn" id="Open">Open</button>
+        <button type="button" class="saveBtn" data-placement="bottom" data-toggle="popover" id="New" onclick='newgraph()'>New</button>
+        <button type="button" class="saveBtn" data-placement="bottom" data-toggle="popover" id="Open" onclick='openProject()'>Open</button>
         <button type="button" class="saveBtn" data-placement="bottom" data-toggle="popover" id="Save" onclick='savedata()'>Save</button>
         <button type="button" class="saveBtn" data-placement="bottom" data-toggle="popover" id="SaveAs" onclick='saveas()'>Save As</button>
     </div>
@@ -783,7 +874,7 @@
     <!--svg id="load" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg-->
     <div id="load">
         <img src="loading1.gif"></img>
-		Searching...<br>Please wait
+        Searching...<br>Please wait
     </div>
 
     <div id="leftPart" class="left">
