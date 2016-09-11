@@ -17,6 +17,8 @@
     <script type="text/javascript" src="WdrawBall.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jquery.tipsy.js"></script>
+    <link href="tipsy.css" rel="stylesheet" type="text/css" />
     <script>
         var root = {
             "id": "",
@@ -51,269 +53,73 @@
                             name[key] = name[key].substr(1, name[key].length - 2);
                             console.log(name[key]);
                             if (name[key] != "") {
-                                list += "<li class='list-group-item' id='" + name[key] + "'>" + name[key] + "</li>";
+                                list += "<li class='list-group-item' id='" + name[key] + "'>" + name[key] + "<img src='trash.png' type='button'style='width:35px;cursor:pointer;position:absolute;right:0px;' data-placement='right' data-toggle='popover' class='delete' id='" + name[key] + "'></li>";
+
                             }
                         }
                     }
                 });
                 $("#classList").html(list);
+                $('.delete').hover(function() {
+                    $(this).css("width", "40px");
+                }, function() {
+                    $(this).css("width", "35px");
+                });
+                $('.delete').click(function(e) {
+                    if (sureTodelete(this.id) == true) {
+                        e.stopPropagation();
+                        var apiName = (this.title).substring(7) + ".json";
+                        var apiid = (this.id).substring(2);
+                        var site = "http://140.121.197.135:7778/servrel/workspace/project?delete=true&project=" + this.id + "&userID=" + localStorage.userID;
+
+                        $.post(site, function(result) {
+                            console.log(result);
+                            if (result.code == "200") {
+                                alert("Delete Success");
+                            } else {
+                                console.log("逆失敗惹");
+                            }
+                        }, "json");
+                        workList();
+                    }
+                });
                 opendata();
             });
         }
-
+        function sureTodelete(id)
+		{
+		   var con = "<input class='btn btn-primary' type='submit' value='OK'>";
+		  $(id).popover({
+                title: 'Are you sure to delete this project?',
+                trigger: 'click',
+                html: true,
+                content: con,
+            });		
+		  console.log("有執行ㄇ?");	
+		  return true;
+		}
         function opendata() {
             $(".list-group-item").click(function() {
+                clearAll();
+                getDraw();
                 console.log(this.id);
                 var site = "http://140.121.197.135:7778/servrel/workspace/project?userID=" + localStorage.userID + "&project=" + this.id;
                 $.getJSON(site, function(data) {
                     console.log(data);
                     //console.log(data.data);
                     root = data.data;
-                    //newproject();  
                     console.log("有執行ㄇ");
-                    root = root.substr(1, root.length - 2);
-                    root = root.toString(root);
+                    //root = root.substr(1, root.length - 2);
+                    //console.log(root);
+                    //root = root.toString(root);
                     //root=JSON.parse(root);
-                    //root=JSON.stringify(root);
-                    //root= {id:"", name:"root", children:[{id:"100", dataid:"144", name:"outdoorDataApi_outdoorsPlace100", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium", visible:0, _children:null, parent:{}, depth:1, x:66.9767441860465, y:73.33333333333333, x0:66.9767441860465, y0:73.33333333333333, children:[{id:"101", name:"", mark:"comp", image:"comp.png", visible:0, parent:{}, depth:2, x:50.23255813953487, y:146.66666666666666, x0:50.23255813953487, y0:146.66666666666666, _children:null, children:[{favorpeople:"8", name:"Youtube_captionVideo.json", rank:1, id:20589, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium", dataid:"197", visible:0, parent:{}, depth:3, x:27.90697674418604, y:220, x0:27.90697674418604, y0:220}, {favorpeople:"8", name:"Youtube_Search.json", rank:2, id:88815, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium", dataid:"199", visible:0, parent:{}, depth:3, x:39.06976744186045, y:220, x0:39.06976744186045, y0:220}, {favorpeople:"8", name:"dailymotion_video.json", rank:3, id:44755, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium", dataid:"18", visible:0, parent:{}, depth:3, x:50.23255813953487, y:220, x0:50.23255813953487, y0:220}, {favorpeople:"8", name:"Vimeo_Search.json", rank:4, id:10745, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium", dataid:"176", visible:0, parent:{}, depth:3, x:61.3953488372093, y:220, x0:61.3953488372093, y0:220}, {favorpeople:"8", name:"Youtube_searchChannel.json", rank:5, id:84310, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium", dataid:"200", visible:0, parent:{}, depth:3, x:72.55813953488371, y:220, x0:72.55813953488371, y0:220}]}, {id:"102", name:"", mark:"pre", image:"pre.png", visible:0, parent:{}, depth:2, x:66.9767441860465, y:146.66666666666666, x0:66.9767441860465, y0:146.66666666666666}, {id:"103", name:"", mark:"post", image:"post.png", visible:0, parent:{}, depth:2, x:83.72093023255813, y:146.66666666666666, x0:83.72093023255813, y0:146.66666666666666}]}, {id:"200", dataid:"190", name:"worldweatheronline_searchWeatherLocationByGeocoding200", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium", visible:0, _children:null, parent:{}, depth:1, x:184.1860465116279, y:73.33333333333333, x0:184.1860465116279, y0:73.33333333333333, children:[{id:"201", name:"", mark:"comp", image:"comp.png", visible:0, parent:{}, depth:2, x:167.4418604651163, y:146.66666666666666, _children:null, x0:167.4418604651163, y0:146.66666666666666, children:[{favorpeople:"8", name:"worldweatheronline_searchWeatherLocationByIP.json", rank:1, id:33845, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37a0e4b0b60946a2e726_medium", dataid:"191", visible:0, parent:{}, depth:3, x:145.11627906976744, y:220, x0:145.11627906976744, y0:220}, {favorpeople:"8", name:"Geonames_wikipediaSearch.json", rank:2, id:57883, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa3492e4b07e1f4ebe9f2b_medium", dataid:"75", visible:0, parent:{}, depth:3, x:156.27906976744185, y:220, x0:156.27906976744185, y0:220}, {favorpeople:"8", name:"FouesquareaVenuesExplore_near_topPicks.json", rank:3, id:23321, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium", dataid:"68", visible:0, parent:{}, depth:3, x:167.4418604651163, y:220, x0:167.4418604651163, y0:220}, {favorpeople:"8", name:"nytimes_Geographic.json", rank:4, id:64368, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa30c8e4b008bb2ef84a05_medium", dataid:"126", visible:0, parent:{}, depth:3, x:178.6046511627907, y:220, x0:178.6046511627907, y0:220}, {favorpeople:"8", name:"worldweatheronline_searchWeatherLocationByGeocoding.json", rank:5, id:34461, pic:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium", workspacepeople:"6", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium", dataid:"190", visible:0, parent:{}, depth:3, x:189.7674418604651, y:220, x0:189.7674418604651, y0:220}]}, {id:"202", name:"", mark:"pre", image:"pre.png", visible:0, parent:{}, depth:2, x:184.18604651162792, y:146.66666666666666, x0:184.18604651162792, y0:146.66666666666666}, {id:"203", name:"", mark:"post", image:"post.png", visible:0, parent:{}, depth:2, x:200.93023255813955, y:146.66666666666666, x0:200.93023255813955, y0:146.66666666666666}]}, {id:"300", dataid:"46", name:"FacebookGraphSearchPlace300", image:"https://s3.amazonaws.com/mashape-production-logos/apis/53aa5890e4b0a798dbd1aebb_medium", visible:0, _children:null, parent:{}, depth:1, x:301.3953488372093, y:73.33333333333333, x0:301.3953488372093, y0:73.33333333333333, children:[{id:"301", name:"", mark:"comp", image:"comp.png", visible:0, parent:{}, depth:2, x:284.6511627906977, y:146.66666666666666, x0:284.6511627906977, y0:146.66666666666666}, {id:"302", name:"", mark:"pre", image:"pre.png", visible:0, parent:{}, depth:2, x:301.3953488372093, y:146.66666666666666, x0:301.3953488372093, y0:146.66666666666666}, {id:"303", name:"", mark:"post", image:"post.png", visible:0, parent:{}, depth:2, x:318.13953488372096, y:146.66666666666666, x0:318.13953488372096, y0:146.66666666666666}]}], depth:0, x:184.1860465116279, y:0, x0:184.1860465116279, y0:0};
-                    root = {
-                        id: "",
-                        name: "root",
-                        children: [{
-                            id: "100",
-                            dataid: "119",
-                            name: "dailymotion_video100",
-                            image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                            visible: 0,
-                            _children: null,
-                            parent: {},
-                            depth: 1,
-                            x: 180,
-                            y: 73.33333333333333,
-                            x0: 180,
-                            y0: 73.33333333333333,
-                            children: [{
-                                id: "101",
-                                name: "",
-                                mark: "comp",
-                                image: "comp.png",
-                                visible: 0,
-                                parent: {},
-                                depth: 2,
-                                x: 90,
-                                y: 146.66666666666666,
-                                _children: null,
-                                x0: 90,
-                                y0: 146.66666666666666,
-                                children: [{
-                                    favorpeople: "8",
-                                    name: "dailymotion_video.json",
-                                    rank: 1,
-                                    id: 82121,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "119",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 50.00000000000001,
-                                    y: 220,
-                                    x0: 50.00000000000001,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "dailymotion_game.json",
-                                    rank: 2,
-                                    id: 41653,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "120",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 70,
-                                    y: 220,
-                                    x0: 70,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "Youtube_captionVideo.json",
-                                    rank: 3,
-                                    id: 38973,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "139",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 90,
-                                    y: 220,
-                                    x0: 90,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "Youtube_Search.json",
-                                    rank: 4,
-                                    id: 17539,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "45",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 110.00000000000001,
-                                    y: 220,
-                                    x0: 110.00000000000001,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "thesaurusAltervista_synonyms.json",
-                                    rank: 5,
-                                    id: 47571,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "199",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 130.00000000000003,
-                                    y: 220,
-                                    x0: 130.00000000000003,
-                                    y0: 220
-                                }]
-                            }, {
-                                id: "102",
-                                name: "",
-                                mark: "pre",
-                                image: "pre.png",
-                                visible: 0,
-                                parent: {},
-                                depth: 2,
-                                x: 180,
-                                y: 146.66666666666666,
-                                x0: 180,
-                                y0: 146.66666666666666
-                            }, {
-                                id: "103",
-                                name: "",
-                                mark: "post",
-                                image: "post.png",
-                                visible: 0,
-                                parent: {},
-                                depth: 2,
-                                x: 270,
-                                y: 146.66666666666666,
-                                x0: 270,
-                                y0: 146.66666666666666,
-                                _children: null,
-                                children: [{
-                                    favorpeople: "8",
-                                    name: "dailymotion_video.json",
-                                    rank: 1,
-                                    id: 29788,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "119",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 230,
-                                    y: 220,
-                                    x0: 230,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "Youtube_captionVideo.json",
-                                    rank: 2,
-                                    id: 67973,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "139",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 250.00000000000003,
-                                    y: 220,
-                                    x0: 250.00000000000003,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "dailymotion_game.json",
-                                    rank: 3,
-                                    id: 58016,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "120",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 270,
-                                    y: 220,
-                                    x0: 270,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "Youtube_Search.json",
-                                    rank: 4,
-                                    id: 73002,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "45",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 290.00000000000006,
-                                    y: 220,
-                                    x0: 290.00000000000006,
-                                    y0: 220
-                                }, {
-                                    favorpeople: "8",
-                                    name: "thesaurusAltervista_synonyms.json",
-                                    rank: 5,
-                                    id: 50579,
-                                    pic: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    workspacepeople: "6",
-                                    image: "https://s3.amazonaws.com/mashape-production-logos/apis/53aa5971e4b051a76d241234_medium",
-                                    dataid: "199",
-                                    visible: 0,
-                                    parent: {},
-                                    depth: 3,
-                                    x: 310,
-                                    y: 220,
-                                    x0: 310,
-                                    y0: 220
-                                }]
-                            }]
-                        }],
-                        depth: 0,
-                        x: 180,
-                        y: 0,
-                        x0: 180,
-                        y0: 0
-                    };
+                    // root=JSON.stringify(root);
+                    root = eval(root);
                     console.log(root);
                     drawBall(svg, 2);
                 });
             });
         }
-
-        function newproject() {
-            d3.select("svg").remove();
-            /* countballs = 1;
-             countLogo = 0;
-             opendata();*/
-
-        }
-
         var newGraph = 0;
 
         function newgraph() {
@@ -350,8 +156,6 @@
             };
             console.log(root);
             d3.select("svg").remove();
-            countballs = 1;
-            countLogo = 0;
         }
 
         function openProject() {
@@ -386,7 +190,6 @@
                     content: list,
                 });
             });
-            //var con = "<form action='JavaScript:sendData()' method='get'><input type='text' data-provide='typeahead' name='projectname'><input class='btn btn-primary' type='submit' value='OK'><input class='btn btn-primary' type='submit' onclick='javascript:clearAll();return false;' value='Cancel'></form>";
             newGraph = 1;
         }
 
@@ -407,13 +210,7 @@
             var ptname = $('input[name="projectname"]').val();
             var wsite = "http://140.121.197.135:7778/servrel/workspace/project";
             var dataroot = root.toSource();
-            //var dataroot=shallowStringify(root);
-
-            /*$.post(wsite, 
-			      {"projectname": ptname, "data": dataroot},  
-				  function(data, status){alert("Data: " + data + "\nStatus: " + status);}				  
-                  );*/
-
+            //var dataroot=shallowStringify(root);        
             console.log(dataroot);
             $.post(wsite, {
                 "project": ptname,
@@ -431,25 +228,6 @@
                 clearAll();
                 newGraph = 0;
             }
-            /* $.ajax({
-                type: "POST",
-                url: "http://140.121.197.135:7778/servrel/workspace/project",
-                data: {
-                    project: ptname,
-                    data: dataroot,
-					userID:localStorage.userID
-                },
-                contentType: "application/json",
-                dataType: "json",
-                　success: function(data) {
-                    console.log("success");　　　　　
-                    console.log(data);
-                },
-                　error: function() {
-                    console.log("error");　
-                    console.log(data);
-                }
-            });*/
         }
 
         function shallowStringify(obj, onlyProps, skipTypes) {
@@ -582,7 +360,7 @@
     </div>
 
 
-    <div class="container">
+    <div class="container" style="width:20%;height:80%;overflow:auto;">
         <h2>Workspace</h2>
         <ul class="list-group" id="classList">
         </ul>

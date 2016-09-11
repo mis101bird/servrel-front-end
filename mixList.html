@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>List0807</title>
+    <title>SERVREL</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="scriptStyle.css">
@@ -18,10 +18,10 @@
     <script src="layer-v2.3/layer/layer.js"></script>
     <!--script src="http://res.layui.com/lay/lib/layer/src/layer.js?v=2.3"></script-->
 
-    <script type="text/javascript" src="./ball.js"></script>
     <script type="text/javascript" src="drawBall-2.js"></script>
-
-
+    
+	<script type="text/javascript" src="jquery.tipsy.js"></script>
+    <link href="tipsy.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
         var countballs = 1;
@@ -385,13 +385,14 @@
             console.log(root);
             // alert(root);				
         }
-
+        
         function sendData() {
             var ptname = $('input[name="projectname"]').val();
             var wsite = "http://140.121.197.135:7778/servrel/workspace/project";
             var dataroot = root.toSource();
+			//var dataroot=JSON.stringify(root);
             //var dataroot=shallowStringify(root);
-
+            //var dataroot=eval(root);
             /*$.post(wsite, 
 			      {"projectname": ptname, "data": dataroot},  
 				  function(data, status){alert("Data: " + data + "\nStatus: " + status);}				  

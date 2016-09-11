@@ -125,7 +125,16 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             .attr("height", img_h)
             .attr("xlink:href", function(d) {
                 return d.image;
-            })
+            });
+			
+		$('.node').tipsy({ 
+        gravity: 'w', 
+        html: true, 
+        title: function() {
+          var d = this.__data__;			
+          return d.name; 
+        }
+        });
 
         //為節點添加說明文字
         node.append("text")
@@ -146,6 +155,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             .attr("transform", function(d) {
                 return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
             });
+		
         //fontawesome button labels
         var labels = ['\uf00d', '\uf0c9', '\uf066'];
 
@@ -411,7 +421,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                 //為節點添加說明文字
             node.append("text")
                 .attr("dy", ".5em")
-                .attr("class", "text2")
+                .attr("class", "text")
                 .text(function(d) {
                     if (d.visible == 0)
                         return d.name;
@@ -424,6 +434,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
 
                 });
 
+			
             //節點動畫
             var nodeUpdate = node.transition()
                 .duration(duration)
@@ -539,7 +550,14 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                 button.select("rect")
                     .attr("fill", pressedColor)
             }
-
+            $('.node').tipsy({ 
+				gravity: 'w', 
+				html: true, 
+				title: function() {
+				  var d = this.__data__;			
+				  return d.name; 
+				}
+				});
             //記錄下當前位置,為下次動畫記錄初始值
             nodes.forEach(function(d) {
                 d.x0 = d.x;
