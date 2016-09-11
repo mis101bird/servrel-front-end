@@ -33,6 +33,29 @@
 			font-size: 18px;
 			font-family: Calibri;
 		}
+		#manageAPI #newAPI{
+			position: absolute;
+			width: 60%;
+			left: 20%;
+			top: 5%;
+			padding: 10px;
+			font-size: 24px;
+		}
+		#manageAPI #newAPI input{
+			width: 290px;
+			font-size: 18px;
+			margin: 2px;
+			display: inline;
+			float: right;
+		}
+		#manageAPI #newAPI #newAPIBtn{
+			width: 85px;
+			border: 2px #0A090C solid;
+			background-color: #0A090C;
+			color: #F0EDEE;
+			border-radius: 5px;
+			margin: 10px;
+		}
 		#manageAPI #APIpic{
 			position: relative;
 			width: 180px;
@@ -64,18 +87,20 @@
 		}
 		#manageAPI #modifyAPI{
 			position: relative;
-			width: 90%;
-			left: 5%;
+			width: 80%;
+			left: 10%;
 			top: 20px;
-			padding: 10px 0 0 8%;
+			padding: 20px 0 0 8%;
 			border-top: 1px #D6D5C9 solid;
 			font-size: 24px;
 			clear: both;
 		}
 		#manageAPI #modifyAPI input{
-			font-size: 20px;
-			margin: 2px;
+			font-size: 18px;
+			width: 290px;
 			display: inline;
+			float: right;
+			margin: 0 12% 0 0;
 		}
 		#manageAPI #modifyAPI #mBtn{
 			width: 85px;
@@ -84,13 +109,15 @@
 			color: #F0EDEE;
 			border-radius: 5px;
 			margin: 10px;
-			float: left;
 		}
 	</style>
 	
 	<script>
     $(document).ready(function() {
-        $("#flotTag").hover(function() {
+        if (localStorage.userID == undefined) {
+			window.location.assign("login.html");
+		}
+		$("#flotTag").hover(function() {
             $(this).animate({
                 margin: "-10px 0 0 -185px",
                 width: "185px",
@@ -106,13 +133,14 @@
 		$(".list-group-item").click(function() {
 			$("li").filter('.active').removeClass('active');
 			$(this).addClass('active').removeClass('hover');
-			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><div id='modifyAPI'>API Name: <input id='newAPIName' type='text' required><br>Icon: <input id='newAPIIcon' type='text'><br>Swagger: <input id='newAPIFile' type='file' required><br><input type='button' id='mBtn' value='Save'></div>";
+			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><div id='modifyAPI'><p>API Name: <input id='mAPIName' type='text' required></p><p>Icon: <input id='mAPIIcon' type='text'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' required></p><p>API ID: <input id='mAPIID' type='text'></p><p>Swagger: <input id='mAPIFile' type='file' required></p><input type='button' id='mBtn' value='Save'></div>";
 			
 			$('#manageAPI').html(con);
 			
         });
 		$("#newMyAPI").click(function() {
-			var con = "<div for='file' class='text-info'class='toggle-form active'><label><h4>Format</h4></label><div><select class='form-control' id='file-format' name='format'><option value='swagger1.2' selected>Swagger 1.2</option></select></div><div class='form-group' class='text-info'><label for='exampleInputFile'><h4>檔案上傳</h4></label><input type='file' class='btn-text'id='exampleInputFile'></div><div class='or'><h4>----------------------------------------------------------------------------or----------------------------------------------------------------------------</h4></div><div for='address' class='form-group'><label>Base URL</label><input id='address' type='url' name='address' placeholder='http://api.yourdomain.com' value='' class='form-control'></div><div for='apiName' class='form-group'><label>API Name <span class='text-muted hide'>(optional)</span></label><input id='apiName' type='text' name='apiName' placeholder='i.e. GeoGraph' maxlength='100' value='' class='form-control'></div></div>";
+			$("li").filter('.active').removeClass('active');
+			var con = "<form id='newAPI'>API Name: <input id='newAPIName' type='text' required><br><br>Icon: <input id='newAPIIcon' type='text'><br><br>User ID: <input id='newUserID' type='text' required><br><br>API ID: <input id='newAPIID' type='text'><br><br>Swagger: <input id='newAPIFile' type='file' required><br><br><input type='button' id='newAPIBtn' value='Upload'></form>";
 			$('#manageAPI').html(con);
 		});
 		
@@ -144,31 +172,14 @@
 	
 	
     <div id="manageAPI">
-        <div for="file" class="text-info"class="toggle-form active">
-			<label><h4>Format</h4></label>
-            <div>
-				<select class="form-control" id="file-format" name="format">
-					<option value="swagger1.2" selected>Swagger 1.2</option>
-				</select>
-			</div>
-            <div class="form-group" class="text-info">
-                <label for="exampleInputFile">
-					<h4>檔案上傳</h4>
-				</label>
-                <input type="file" class="btn-text"id="exampleInputFile">
-            </div>
-            <div class="or">
-                <h4>----------------------------------------------------------------------------or----------------------------------------------------------------------------</h4>
-			</div>
-            <div for="address" class="form-group">
-				<label>Base URL</label>
-				<input id="address" type="url" name="address" placeholder="http://api.yourdomain.com" value="" class="form-control">
-			</div>
-            <div for="apiName" class="form-group">
-				<label>API Name <span class="text-muted hide">(optional)</span></label>
-				<input id="apiName" type="text" name="apiName" placeholder="i.e. GeoGraph" maxlength="100" value="" class="form-control">
-			</div>                
-        </div>
+		<form id="newAPI">
+			API Name: <input id='newAPIName' type='text' required><br><br>
+			Icon: <input id='newAPIIcon' type='text'><br><br>
+			User ID: <input id='newUserID' type='text' required><br><br>
+			API ID: <input id='newAPIID' type='text'><br><br>
+			Swagger: <input id='newAPIFile' type='file' required><br><br>
+			<input type='button' id='newAPIBtn' value='Upload'>
+		</form>
     </div>
     <div id="flotTag">
         <table id="pageLink">
