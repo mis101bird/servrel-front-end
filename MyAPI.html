@@ -112,101 +112,56 @@
 		}
 	</style>
 	
-	<script>
-	function uploadAPI(){
-		console.log("HI");
-		var name = $("#newAPIName").val();
-		var icon = $("#newAPIIcon").val();
-		var uID = $("#newUserID").val();
-		var aID = $("#newAPIID").val();
-		var swagger = $("#newAPIFile").val();
-			
-		/*$.ajax({
-			url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
-			method: 'POST',
-			data: {
-				name:name,
-				pic:icon,
-				swagger:swagger,
-				userID:uID,
-				id:aID
-			},
-			async: false,
-            cache: false,
-            contentType: false,
-            processData: false,
-			success: function (data) {
-                alert('return: ' + data);
-            },
-            error: function(){
-                alert("error in ajax form submission");
-            }
-		});*/
-			
-			
-		$("#newAPI").submit(function(){
-
-			var formData = new FormData($(this)[0]);
-
-			$.ajax({
-					url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
-					type: 'POST',
-					data: formData,
-					async: false,
-					success: function (data) {
-					alert(data)
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			});
-
-			return false;
-		});
-
-		
-	}
-	
-	
+	<script>	
     $(document).ready(function() {
         if (localStorage.userID == undefined) {
 			window.location.assign("login.html");
 		}
 		$("#flotTag").hover(function() {
-            $(this).animate({
-                margin: "-10px 0 0 -185px",
-                width: "185px",
-                height: "130px"
-            }, "fast");
+            $(this).animate({margin: "-10px 0 0 -185px", width: "185px", height: "130px"}, "fast");
         }, function() {
-            $(this).animate({
-                margin: "0 0 0 -35px",
-                width: "31px",
-                height: "26px"
-            }, "fast");
+            $(this).animate({margin: "0 0 0 -35px", width: "31px", height: "26px"}, "fast");
         });
-		$(".list-group-item").click(function() {
+		$(document).on("click", ".list-group-item", function() {
 			$("li").filter('.active').removeClass('active');
 			$(this).addClass('active').removeClass('hover');
-			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><div id='modifyAPI'><p>API Name: <input id='mAPIName' type='text' required></p><p>Icon: <input id='mAPIIcon' type='text'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' required></p><p>API ID: <input id='mAPIID' type='text'></p><p>Swagger: <input id='mAPIFile' type='file' required></p><input type='button' id='mBtn' value='Save'></div>";
+			
+			var apiid = (this.id).substring(10);		//my API ID			
+			
+			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='mAPIIcon' type='text' name='pic'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' disabled></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form>";
 			
 			$('#manageAPI').html(con);
 			
         });
 		
-		$(document).on('submit', '#newAPI', function(){
+		$(document).on('submit', '.uploadAPI', function(){
 			var formData = new FormData($(this)[0]);
+			var apiName = $("input[name='name']").val();
 			$.ajax({
 					url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
 					type: 'POST',
 					data: formData,
 					async: false,
 					success: function (data) {
-					alert(data)
-				},
-				cache: false,
-				contentType: false,
-				processData: false
+						//alert(data + "\ncode: " + this.code);
+						var dataJSON = $.parseJSON(data);
+						console.log(data);
+						if(dataJSON.code == '200'){
+							alert("Upload success!");
+							var l = "<li class='list-group-item' id='myAPIList_" + dataJSON.id + "'>" + apiName + "</li>";
+							$("#myAPIList").append(l);
+							$(".uploadAPI").find("input:text, input:file").each(function() {
+								$(this).val("");
+							});
+						}
+						else if(dataJSON.code == '400'){
+							alert("Please change another API name.");
+							$("#newAPIName").val("");
+						}
+					},
+					cache: false,
+					contentType: false,
+					processData: false
 			});
 			return false;
 		});
@@ -231,18 +186,18 @@
 			<span class="glyphicon glyphicon-plus"></span> New API
         </button>
 		<br><br>
-        <ul class="list-group">
-            <li class="list-group-item">Book_Search</li>
-            <li class="list-group-item">Movie_Search</li>
-            <li class="list-group-item">Music_Search</li>
-            <li class="list-group-item">Comic_Search</li>
-			<li class="list-group-item">Travel_Search</li>
+        <ul class="list-group" id="myAPIList">
+            <li class="list-group-item" id="myAPIList_1">Book_Search</li>
+            <li class="list-group-item" id="myAPIList_2">Movie_Search</li>
+            <li class="list-group-item" id="myAPIList_3">Music_Search</li>
+            <li class="list-group-item" id="myAPIList_4">Comic_Search</li>
+			<li class="list-group-item" id="myAPIList_5">Travel_Search</li>
         </ul>
     </div>
 	
 	
     <div id="manageAPI">
-		<form id="newAPI" method="post" enctype="multipart/form-data">
+		<form id="newAPI" class="uploadAPI" method="post" enctype="multipart/form-data">
 			API Name: <input id='newAPIName' type='text' name='name' required><br><br>
 			Icon: <input id='newAPIIcon' type='text' name='pic'><br><br>
 			User ID: <input id='newUserID' type='text' name='userID' required><br><br>
