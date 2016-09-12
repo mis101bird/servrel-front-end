@@ -113,6 +113,61 @@
 	</style>
 	
 	<script>
+	function uploadAPI(){
+		console.log("HI");
+		var name = $("#newAPIName").val();
+		var icon = $("#newAPIIcon").val();
+		var uID = $("#newUserID").val();
+		var aID = $("#newAPIID").val();
+		var swagger = $("#newAPIFile").val();
+			
+		/*$.ajax({
+			url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
+			method: 'POST',
+			data: {
+				name:name,
+				pic:icon,
+				swagger:swagger,
+				userID:uID,
+				id:aID
+			},
+			async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+			success: function (data) {
+                alert('return: ' + data);
+            },
+            error: function(){
+                alert("error in ajax form submission");
+            }
+		});*/
+			
+			
+		$("#newAPI").submit(function(){
+
+			var formData = new FormData($(this)[0]);
+
+			$.ajax({
+					url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
+					type: 'POST',
+					data: formData,
+					async: false,
+					success: function (data) {
+					alert(data)
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+
+			return false;
+		});
+
+		
+	}
+	
+	
     $(document).ready(function() {
         if (localStorage.userID == undefined) {
 			window.location.assign("login.html");
@@ -138,13 +193,28 @@
 			$('#manageAPI').html(con);
 			
         });
+		
+		$(document).on('submit', '#newAPI', function(){
+			var formData = new FormData($(this)[0]);
+			$.ajax({
+					url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
+					type: 'POST',
+					data: formData,
+					async: false,
+					success: function (data) {
+					alert(data)
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return false;
+		});
 		$("#newMyAPI").click(function() {
 			$("li").filter('.active').removeClass('active');
-			var con = "<form id='newAPI'>API Name: <input id='newAPIName' type='text' required><br><br>Icon: <input id='newAPIIcon' type='text'><br><br>User ID: <input id='newUserID' type='text' required><br><br>API ID: <input id='newAPIID' type='text'><br><br>Swagger: <input id='newAPIFile' type='file' required><br><br><input type='button' id='newAPIBtn' value='Upload'></form>";
+			var con = "<form id='newAPI' method='post' enctype='multipart/form-data'>API Name: <input id='newAPIName' type='text' name='name' required><br><br>Icon: <input id='newAPIIcon' type='text' name='pic'><br><br>User ID: <input id='newUserID' type='text' name='userID' required><br><br><input id='newAPIID' type='hidden' name='id' value=''>Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><br><input type='submit' id='newAPIBtn' value='Upload'></form>";
 			$('#manageAPI').html(con);
 		});
-		
-		
     });
 	</script>
 </head>
@@ -172,13 +242,13 @@
 	
 	
     <div id="manageAPI">
-		<form id="newAPI">
-			API Name: <input id='newAPIName' type='text' required><br><br>
-			Icon: <input id='newAPIIcon' type='text'><br><br>
-			User ID: <input id='newUserID' type='text' required><br><br>
-			API ID: <input id='newAPIID' type='text'><br><br>
-			Swagger: <input id='newAPIFile' type='file' required><br><br>
-			<input type='button' id='newAPIBtn' value='Upload'>
+		<form id="newAPI" method="post" enctype="multipart/form-data">
+			API Name: <input id='newAPIName' type='text' name='name' required><br><br>
+			Icon: <input id='newAPIIcon' type='text' name='pic'><br><br>
+			User ID: <input id='newUserID' type='text' name='userID' required><br><br>
+			<input id='newAPIID' type='hidden' name='id' value=''>
+			Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><br>
+			<input type='submit' id='newAPIBtn' value='Upload'>
 		</form>
     </div>
     <div id="flotTag">
