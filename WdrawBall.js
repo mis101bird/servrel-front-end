@@ -1,4 +1,4 @@
-function drawBall(svg, countballs) {
+function WdrawBall(svg, countballs) {
     var R = 600; //圖像區域大小
     var duration = 1000; //動畫持續時間
     var index = 0; //節點編號
@@ -127,7 +127,7 @@ function drawBall(svg, countballs) {
             .attr("xlink:href", function(d) {
                 return d.image;
             })
-			
+		//在節點上加入標籤名稱
          $('.node').tipsy({ 
 				gravity: 'w', 
 				html: true, 
@@ -553,6 +553,7 @@ function drawBall(svg, countballs) {
                 button.select("rect")
                     .attr("fill", pressedColor)
             }
+			//在節點上加入標籤名稱
 			  $('.node').tipsy({ 
 				gravity: 'w', 
 				html: true, 

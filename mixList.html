@@ -19,7 +19,7 @@
     <!--script src="http://res.layui.com/lay/lib/layer/src/layer.js?v=2.3"></script-->
 
     <script type="text/javascript" src="drawBall-2.js"></script>
-    
+    <script type="text/javascript" src="WdrawBall.js"></script>
 	<script type="text/javascript" src="jquery.tipsy.js"></script>
     <link href="tipsy.css" rel="stylesheet" type="text/css" />
 
@@ -348,12 +348,12 @@
                         ptname = ptname.substr(1, ptname.length - 2);
                         console.log(ptname);
                         var name = ptname.split(/,/);
-                        list += "<ul>";
+                        list += "<ul class='list-group'>";
                         for (key in name) {
                             name[key] = name[key].substr(1, name[key].length - 2);
                             console.log(name[key]);
                             if (name[key] != "") {
-                                list += "<li id='" + name[key] + "'>" + name[key] + "</li>";
+                                list += "<a href='#'<li class='list-group-item' id='" + name[key] + "'>" + name[key] + "</li></a>";
                             }
                         }
                         list += "</ul>";
@@ -362,8 +362,7 @@
                 //$("#classList").html(list);
                 //opendata();
                 console.log(list);
-                $('#Open').popover({
-                    title: 'Project:',
+                $('#Open').popover({                    
                     trigger: 'click',
                     html: true,
                     content: list,
@@ -645,9 +644,6 @@
             $(testbtn).click(function() {
                 var site = data.Info.hostUrl + data.Info.path;
                 var n = 0;
-				var hasHeader = false;
-				var headerN = 0;
-				var headerCon = "{";
                 $.each(para, function() {
                     if (this.parameterpath == "query") {
                         if (n != 0) {
@@ -658,55 +654,27 @@
                         var input = $("#" + apiid + "_" + this.name).val();
                         site += this.name + "=" + input;
                         n++;
-                    }
-					else if (this.parameterpath == "path") {
+                    } else if (this.parameterpath == "path") {
                         var input = $("#" + apiid + "_" + this.name).val();
                         var repath = "{" + this.name + "}";
                         site = site.replace(repath, input);
                     }
-					else if(this.parameterpath == "header"){
-						hasHeader = true;
-						if(headerN != 0){
-							headerCon += ",";
-						}
-						headerCon += "'" + this.name + "':'" + this.defaultValue + "'";
-						headerN++;
-					}
 
                 });
-				headerCon += "}";
                 console.log("site: " + site);
-				console.log("header: " + headerCon);
                 /*
                 	headers: {
                 		'Authorization': 'Bearer <jwt token>',
                 		'some-other-header': 'some value'
                 	}
                 */
-				if(hasHeader == false){
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-						beforeSend: function (req) {
-							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36');
-						}
-					}).done(function(result) {
-						$("#test_" + apiid).html(JSON.stringify(result));
-					});
-				}
-				else{
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-						beforeSend: function (req) {
-							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36');
-						},
-						headers: headerCon
-					}).done(function(result) {
-						$("#test_" + apiid).html(JSON.stringify(result));
-					});
-				}
-                
+                $.ajax({
+                    url: site,
+                    method: data.Info.httpMethod,
+
+                }).done(function(result) {
+                    $("#test_" + apiid).html(JSON.stringify(result));
+                });
 
 
 
@@ -815,12 +783,32 @@
                 $("#searchContent").html(formCon);
             }
             getSearchForm();
-
+           
             $(document).on("click", ".addExp", function() {
                 var fieldID = "#field_" + this.id;
                 $(fieldID).append("<br>Expected: <input name=" + this.id + " type='text'>");
             });
-
+			 $(".list-group-item").click(function() {
+							console.log("有執行ㄇ");
+							clearAll();
+							svg=getDraw();
+							console.log(this.id);
+							var site = "http://140.121.197.135:7778/servrel/workspace/project?userID=" + localStorage.userID + "&project=" + this.id;
+							$.getJSON(site, function(data) {
+								console.log(data);
+								//console.log(data.data);
+								root = data.data;
+								console.log("有執行ㄇ");
+								//root = root.substr(1, root.length - 2);
+								//console.log(root);
+								//root = root.toString(root);
+								//root=JSON.parse(root);
+								// root=JSON.stringify(root);
+								root = eval(root);
+								console.log(root);
+								WdrawBall(svg, 2);
+							});
+						});
             $("#graphBar").click(function() {
                 if (graphSize % 2 == 0) {
                     $("#saveButton").css({

@@ -116,7 +116,7 @@
                     // root=JSON.stringify(root);
                     root = eval(root);
                     console.log(root);
-                    drawBall(svg, 2);
+                    WdrawBall(svg, 2);
                 });
             });
         }
@@ -169,12 +169,12 @@
                         ptname = ptname.substr(1, ptname.length - 2);
                         console.log(ptname);
                         var name = ptname.split(/,/);
-                        list += "<ul>";
+                        list += "<ul class='list-group'>";
                         for (key in name) {
                             name[key] = name[key].substr(1, name[key].length - 2);
                             console.log(name[key]);
                             if (name[key] != "") {
-                                list += "<li id='" + name[key] + "'>" + name[key] + "</li>";
+                                list += "<a href='#'<li class='list-group-item' style='height:2%;overflow: auto;'id='" + name[key] + "'>" + name[key] + "</li></a>";
                             }
                         }
                         list += "</ul>";
@@ -183,8 +183,7 @@
                 //$("#classList").html(list);
                 //opendata();
                 console.log(list);
-                $('#Open').popover({
-                    title: 'Project:',
+                $('#Open').popover({                    
                     trigger: 'click',
                     html: true,
                     content: list,
