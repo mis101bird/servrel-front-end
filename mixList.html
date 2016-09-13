@@ -644,6 +644,10 @@
             $(testbtn).click(function() {
                 var site = data.Info.hostUrl + data.Info.path;
                 var n = 0;
+				var hasHeader = false;
+				var headerN = 0;
+				var headerCon = "{";
+                
                 $.each(para, function() {
                     if (this.parameterpath == "query") {
                         if (n != 0) {
@@ -658,24 +662,48 @@
                         var input = $("#" + apiid + "_" + this.name).val();
                         var repath = "{" + this.name + "}";
                         site = site.replace(repath, input);
-                    }
+                    }else if(this.parameterpath == "header"){
+						hasHeader = true;
+						if(headerN != 0){
+							headerCon += ",";
+						}
+						headerCon += "'" + this.name + "':'" + this.defaultValue + "'";
+						headerN++;
+					}
 
                 });
+				headerCon += "}";
                 console.log("site: " + site);
+				console.log("header: " + headerCon);
                 /*
                 	headers: {
                 		'Authorization': 'Bearer <jwt token>',
                 		'some-other-header': 'some value'
                 	}
                 */
-                $.ajax({
-                    url: site,
-                    method: data.Info.httpMethod,
-
-                }).done(function(result) {
-                    $("#test_" + apiid).html(JSON.stringify(result));
-                });
-
+                if(hasHeader == false){
+					$.ajax({
+						url: site,
+						method: data.Info.httpMethod,
+						beforeSend: function (req) {
+							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
+						}
+					}).done(function(result) {
+						$("#test_" + apiid).html(JSON.stringify(result));
+					});
+				}
+				else{
+					$.ajax({
+						url: site,
+						method: data.Info.httpMethod,
+						beforeSend: function (req) {
+							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
+						},
+						headers: headerCon
+					}).done(function(result) {
+						$("#test_" + apiid).html(JSON.stringify(result));
+					});
+				}
 
 
 
