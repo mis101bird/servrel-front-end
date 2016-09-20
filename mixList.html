@@ -709,7 +709,7 @@
 				
 				
 				var site = "http://140.121.197.135:7778/servrel/callapi";
-				$.post(site, testJson, function(result){
+				$.post(site, {"test": testJson}, function(result){
 					$("#test_" + apiid).text(JSON.stringify(result));
 				}, "json");
 				
