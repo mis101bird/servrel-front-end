@@ -534,38 +534,35 @@
 
                 var testbtn = "#popTestBtn_" + apiid;
                 $(testbtn).on("click", function() {
-                    var site = data.Info.hostUrl + data.Info.path;
-                    var n = 0;
-                    $.each(para, function() {
-                        if (this.parameterpath == "query") {
-                            if (n != 0) {
-                                site += "&";
-                            } else {
-                                site += "?";
-                            }
-                            var input = $("#" + apiid + "_pop_" + this.name).val();
-                            site += this.name + "=" + input;
-                            n++;
-                        } else if (this.parameterpath == "path") {
-                            var input = $("#" + apiid + "_pop_" + this.name).val();
-                            var repath = "{" + this.name + "}";
-                            site = site.replace(repath, input);
-                        }
-
-                    });
-                    console.log("site: " + site);
-
-                    $.ajax({
-                        url: site,
-                        method: data.Info.httpMethod,
-                    }).done(function(result) {
-                        $("#popTest_" + apiid).html(JSON.stringify(result));
-                    });
-
-                    /*$.getJSON(site, function(result) {
-                        console.log(result);
-                        $("#popTest_" + apiid).html(JSON.stringify(result));
-                    });*/
+					var datas = [];
+					var testJson = "{\"request\":";
+					
+					$.each(para, function() {
+						var d = {};
+						d["parameterpath"] = this.parameterpath;
+						d["testData"] = $("#" + apiid + "_pop_" + this.name).val();
+						d["name"] = this.name;
+						datas.push(d);
+						
+					});
+					
+					testJson += JSON.stringify(datas) + ",";
+					testJson += "\"Info\":";
+					
+					var testInfo = new Object();
+					testInfo.path = data.Info.path;;
+					testInfo.hostUrl = data.Info.hostUrl;
+					testInfo.httpMethod = data.Info.httpMethod;
+					testInfo.contentType = data.Info.contentType;
+					testJson += JSON.stringify(testInfo) + "}";
+					
+					console.log("r: " + testJson);
+					
+					var site = "http://140.121.197.135:7778/servrel/callapi";
+					$.post(site, {"test": testJson}, function(result){
+						$("#popTest_" + apiid).text(JSON.stringify(result));
+					}, "json");
+					
                 });
 
                 if (localStorage.userID != undefined) {
@@ -642,15 +639,8 @@
 
             var testbtn = "#testbtn_" + apiid;
             $(testbtn).click(function() {
-                /*var site = data.Info.hostUrl + data.Info.path;
-                var n = 0;
-				var hasHeader = false;
-				var headerN = 0;
-				var headerCon = "{";*/
-				
 				var datas = [];
 				var testJson = "{\"request\":";
-				
                 
                 $.each(para, function() {
                     var d = {};
@@ -659,102 +649,25 @@
 					d["name"] = this.name;
 					datas.push(d);
 					
-					
-					
-					
-					
-					
-					
-					/*if (this.parameterpath == "query") {
-                        if (n != 0) {
-                            site += "&";
-                        } else {
-                            site += "?";
-                        }
-                        var input = $("#" + apiid + "_" + this.name).val();
-                        site += this.name + "=" + input;
-                        n++;
-                    } else if (this.parameterpath == "path") {
-                        var input = $("#" + apiid + "_" + this.name).val();
-                        var repath = "{" + this.name + "}";
-                        site = site.replace(repath, input);
-                    }else if(this.parameterpath == "header"){
-						hasHeader = true;
-						if(headerN != 0){
-							headerCon += ",";
-						}
-						headerCon += "'" + this.name + "':'" + this.defaultValue + "'";
-						headerN++;
-					}*/
-					
-					
-					
                 });
-				//headerCon += "}";
-                //console.log("site: " + site);
-				testJson += JSON.stringify(datas) + ",";
 				
+				testJson += JSON.stringify(datas) + ",";
 				testJson += "\"Info\":";
 				
 				var testInfo = new Object();
-				
 				testInfo.path = data.Info.path;;
 				testInfo.hostUrl = data.Info.hostUrl;
 				testInfo.httpMethod = data.Info.httpMethod;
 				testInfo.contentType = data.Info.contentType;
-				
 				testJson += JSON.stringify(testInfo) + "}";
 				
 				console.log("r: " + testJson);
-				
 				
 				var site = "http://140.121.197.135:7778/servrel/callapi";
 				$.post(site, {"test": testJson}, function(result){
 					$("#test_" + apiid).text(JSON.stringify(result));
 				}, "json");
 				
-				
-				
-				
-				
-                /*
-                	headers: {
-                		'Authorization': 'Bearer <jwt token>',
-                		'some-other-header': 'some value'
-                	}
-                */
-                /*if(hasHeader == false){
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-						dataType: 'jsonp',
-						beforeSend: function (req) {
-							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
-						}
-					}).done(function(result) {
-						$("#test_" + apiid).html(JSON.stringify(result));
-					});
-				}
-				else{
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-						dataType: 'jsonp',
-						beforeSend: function (req) {
-							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
-						},
-						headers: headerCon
-					}).done(function(result) {
-						$("#test_" + apiid).html(JSON.stringify(result));
-					});
-				}*/
-
-
-
-                /*$.getJSON(site, function(result) {
-                    console.log(result);
-                    $("#test_" + apiid).html(JSON.stringify(result));
-                });*/
             });
 
         }

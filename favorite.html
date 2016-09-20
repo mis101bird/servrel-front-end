@@ -91,40 +91,34 @@
 
                 var testbtn = "#popTestBtn_" + apiid;
                 $(testbtn).on("click", function() {
-                    var site = data.Info.hostUrl + data.Info.path;
-					var n = 0;
+                    var datas = [];
+					var testJson = "{\"request\":";
+					
 					$.each(para, function() {
-						if(this.parameterpath == "query"){
-							if (n != 0) {
-								site += "&";
-							}
-							else{
-								site += "?";
-							}
-							var input = $("#" + apiid + "_pop_" + this.name).val();
-							site += this.name + "=" + input;
-							n++;
-						}
-						else if(this.parameterpath == "path"){
-							var input = $("#" + apiid + "_pop_" + this.name).val();
-							var repath = "{" + this.name + "}";
-							site = site.replace(repath, input);
-						}
+						var d = {};
+						d["parameterpath"] = this.parameterpath;
+						d["testData"] = $("#" + apiid + "_pop_" + this.name).val();
+						d["name"] = this.name;
+						datas.push(d);
 						
 					});
-					console.log("site: " + site);
 					
-					$.ajax({
-						url: site,
-						method: data.Info.httpMethod,
-					}).done(function(result){
-						$("#popTest_" + apiid).html(JSON.stringify(result));
-					});
+					testJson += JSON.stringify(datas) + ",";
+					testJson += "\"Info\":";
 					
-                    /*$.getJSON(site, function(result) {
-                        console.log(result);
-                        $("#popTest_" + apiid).html(JSON.stringify(result));
-                    });*/
+					var testInfo = new Object();
+					testInfo.path = data.Info.path;;
+					testInfo.hostUrl = data.Info.hostUrl;
+					testInfo.httpMethod = data.Info.httpMethod;
+					testInfo.contentType = data.Info.contentType;
+					testJson += JSON.stringify(testInfo) + "}";
+					
+					console.log("r: " + testJson);
+					
+					var site = "http://140.121.197.135:7778/servrel/callapi";
+					$.post(site, {"test": testJson}, function(result){
+						$("#popTest_" + apiid).text(JSON.stringify(result));
+					}, "json");
                 });
 			}, "json");
         }
