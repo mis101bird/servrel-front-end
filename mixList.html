@@ -642,14 +642,30 @@
 
             var testbtn = "#testbtn_" + apiid;
             $(testbtn).click(function() {
-                var site = data.Info.hostUrl + data.Info.path;
+                /*var site = data.Info.hostUrl + data.Info.path;
                 var n = 0;
 				var hasHeader = false;
 				var headerN = 0;
-				var headerCon = "{";
+				var headerCon = "{";*/
+				
+				var datas = [];
+				var testJson = "{\"request\":";
+				
                 
                 $.each(para, function() {
-                    if (this.parameterpath == "query") {
+                    var d = {};
+					d["parameterpath"] = this.parameterpath;
+					d["testData"] = $("#" + apiid + "_" + this.name).val();
+					d["name"] = this.name;
+					datas.push(d);
+					
+					
+					
+					
+					
+					
+					
+					/*if (this.parameterpath == "query") {
                         if (n != 0) {
                             site += "&";
                         } else {
@@ -669,22 +685,49 @@
 						}
 						headerCon += "'" + this.name + "':'" + this.defaultValue + "'";
 						headerN++;
-					}
-
+					}*/
+					
+					
+					
                 });
-				headerCon += "}";
-                console.log("site: " + site);
-				console.log("header: " + headerCon);
+				//headerCon += "}";
+                //console.log("site: " + site);
+				testJson += JSON.stringify(datas) + ",";
+				
+				testJson += "\"Info\":";
+				
+				var testInfo = new Object();
+				
+				testInfo.path = data.Info.path;;
+				testInfo.hostUrl = data.Info.hostUrl;
+				testInfo.httpMethod = data.Info.httpMethod;
+				testInfo.contentType = data.Info.contentType;
+				
+				testJson += JSON.stringify(testInfo) + "}";
+				
+				console.log("r: " + testJson);
+				
+				
+				var site = "http://140.121.197.135:7778/servrel/callapi";
+				$.post(site, testJson, function(result){
+					$("#test_" + apiid).text(JSON.stringify(result));
+				}, "json");
+				
+				
+				
+				
+				
                 /*
                 	headers: {
                 		'Authorization': 'Bearer <jwt token>',
                 		'some-other-header': 'some value'
                 	}
                 */
-                if(hasHeader == false){
+                /*if(hasHeader == false){
 					$.ajax({
 						url: site,
 						method: data.Info.httpMethod,
+						dataType: 'jsonp',
 						beforeSend: function (req) {
 							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
 						}
@@ -696,6 +739,7 @@
 					$.ajax({
 						url: site,
 						method: data.Info.httpMethod,
+						dataType: 'jsonp',
 						beforeSend: function (req) {
 							req.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1 MyAgentCode');
 						},
@@ -703,7 +747,7 @@
 					}).done(function(result) {
 						$("#test_" + apiid).html(JSON.stringify(result));
 					});
-				}
+				}*/
 
 
 
