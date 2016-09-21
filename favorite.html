@@ -129,11 +129,14 @@
             $.getJSON(site, function(result) {
                 console.log(JSON.stringify(result));
 				var list = "";
-                $.each(result, function() {
-					list += "<li class='list-group-item' id='" + this + "'>" + this + "</li>";
-				});
-				$("#classList").html(list);
-				showFavoriteList();
+				if(result.code != "403"){
+					$.each(result, function() {
+						list += "<li class='list-group-item' id='" + this + "'>" + this + "</li>";
+					});
+					$("#classList").html(list);
+					showFavoriteList();
+				}
+                
             });
 			
 		}

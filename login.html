@@ -55,22 +55,26 @@
 			text-decoration: none;
 		}
 		.myForm{
-			position: absolute;
+			position: relative;
+			width: 50%;
 			top: 25%;
-			left: 28%;
+			left: 25%;
 			font-size: 24px;
+		}
+		.myForm input{
+			float: right;
 		}
 		pre{font-family: Calibri;}
 		.btn{
 			position: relative;
-			width: 85px;
-			font-size: 18px;
+			width: 30%;
+			height: 33px;
+			right: 35%;
+			font-size: 20px;
 			border: 2px #0A090C solid;
 			background-color: #0A090C;
 			color: #F0EDEE;
 			border-radius: 5px;
-			margin: 5px;
-			cursor: pointer;
 		}
 		#log{ 
 			width: 48%;
@@ -129,23 +133,24 @@
 		}
 		#myInfo{
 			position: relative;
-			width: 250px;
+			width: 30%;
 			height: 200px;
 			font-size: 24px;
-			left: 50%;
-			margin: 150px 0 0 -125px;
+			left: 35%;
+			margin: 150px 0 0 0;
+			text-align: center;
 		}
 		.logoutbtn{
-			position: relative;
-			width: 36%;
-			font-size: 18px;
+			position: absolute;
+			width: 25%;
+			font-size: 20px;
 			border: 2px #0A090C solid;
 			background-color: #0A090C;
 			color: #F0EDEE;
 			border-radius: 5px;
 			padding: 2px;
-			left: 32%;
-			top: 50px;
+			left: 37%;
+			top: 60px;
 			cursor: pointer;
 		}
 		#accPart{ 
@@ -177,60 +182,11 @@
 	</style>
 
     <script>
-		
 		function logIn(){
 			var acc = $('input[name="account"]').val();
 			var pass = $('input[name="password"]').val();
 			
-			//var site = "http://bluemix-siri.mybluemix.net/login?account=" + acc + "&password=" + pass;
 			var site = "http://140.121.197.135:7778/servrel/login?account=" + acc + "&password=" + pass;
-			//var site = "http://140.121.197.135:7778/servrel/login?account=" + acc + "&password=" + pass;
-			
-			
-			//$("#login").attr("action", site);
-			/*$("#login").submit(function(e)
-			{
-				//var formURL = $(this).attr("action");
-				/*$.ajax(
-				{
-					url : formURL,
-					type: "POST",
-					data: {"account": acc, "password": pass},
-					success:function(data, textStatus, jqXHR) 
-					{
-						console.log(data);
-					},
-					error: function(jqXHR, textStatus, errorThrown) 
-					{
-						console.log(errorThrown);
-					}
-				});*/
-				
-				/*$.post(site, {"account": acc, "password": pass}, function(result) {
-					console.log("post: " + JSON.stringify(result));
-					if(result.code == "200"){
-						alert("Success");
-						console.log("co: " + session.getAttribute("JSESSIONID"));
-						localStorage.userID = acc;
-						$.post("http://140.121.197.135:7778/servrel/workspace/project", function(result) {
-							console.log("post(w): " + JSON.stringify(result));
-						}, "json");
-						//window.history.back();
-					}
-					else{
-						alert(result.message);
-						$('input[name="password"]').val("");
-					}
-				}, "json");
-				
-				
-				e.preventDefault();	//STOP default action
-				e.unbind(); //unbind. to stop multiple form submit.
-			});
-			$("#login").submit();*/
-			
-			
-			
 			
 			$.post(site, function(result) {
 				console.log("post: " + JSON.stringify(result));
@@ -252,8 +208,8 @@
 			var myAcc = $('input[name="myAccount"]').val();
 			var myPass = $('input[name="myPassword"]').val();
 			
-			var site = "http://bluemix-siri.mybluemix.net/signup?user=" + user + "&account=" + myAcc + "&password=" + myPass + "&email=" + mail;
-			$.getJSON(site, function(result) {
+			var site = "http://140.121.197.135:7778/servrel/signup?name=" + user + "&account=" + myAcc + "&password=" + myPass + "&email=" + mail;
+			/*$.getJSON(site, function(result) {
 				if(result.result == "OK"){
 					alert("Registration success");
 					$("#signup").find(".signData").each(function() {
@@ -261,7 +217,21 @@
 					});
 				}
 					
-            });
+            });*/
+			
+			$.post(site, function(result) {
+				console.log("signUp: " + JSON.stringify(result));
+				/*if(result.code == "200"){
+					alert("Success");
+					localStorage.userID = acc;
+					window.history.back();
+				}
+				else{
+					alert(result.message);
+					$('input[name="password"]').val("");
+				}*/
+			}, "json");
+			
 			
 		}
 		
@@ -309,18 +279,18 @@
 	
 	<div id="log">
         <form id="login" class="myForm" method="post" action="JavaScript:logIn()">
-			<pre>Account: 	<input type = "text" name = "account"></pre>
-			<pre>Password: 	<input type = "password" name = "password"></pre>	
-			<input class="btn" type="submit" value="Log In" style="left: 30%;">
+			<p>Account: 	<input type = "text" name = "account"></p>
+			<p>Password: 	<input type = "password" name = "password"></p>	
+			<input class="btn" type="submit" value="Log In">
 		</form>
     </div>
     <div id="sign">
         <form id="signup" class="myForm" method="get" action="JavaScript:signUp()" style="top: 18%;">
-			<pre>User name:	<input class = "signData" type = "text" name = "userName"></pre>
-			<pre>Email:		<input class = "signData" type = "email" name = "email"></pre>
-			<pre>Account: 	<input class = "signData" type = "text" name = "myAccount"></pre>
-			<pre>Password: 	<input class = "signData" type = "password" name = "myPassword"></pre>
-			<input class="btn" type="submit" value="Sign Up" style="left: 30%;">
+			<p>User name:	<input class = "signData" type = "text" name = "userName"></p>
+			<p>Email:		<input class = "signData" type = "email" name = "email"></p>
+			<p>Account: 	<input class = "signData" type = "text" name = "myAccount"></p>
+			<p>Password: 	<input class = "signData" type = "password" name = "myPassword"></p>
+			<input class="btn" type="submit" value="Sign Up">
 		</form>
     </div>
 	
