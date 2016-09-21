@@ -155,7 +155,7 @@
             $.each(data, function() {
                 var myID = "\"" + this['id'] + "\"";
                 a = this['name'].split(".json", 1);
-                lang += "<tr class='apititle' id=apititle_" + this['id'] + " ><td style='width:10%;'><img id=" + this['id'] + " class='logo' title=" + a[0] + " style='width:100%;' draggable='true' ondragstart='dragstartHandler(event)' src=" + hasPic(this['pic']) + "></td><td colspan='3' style='width:70%;'><h3>" + a[0] + "</h3></td><td colspan='2' style='width:10%;'><img src='workspacepeople_title.png'><h4> " + this['workspacepeople'] + "</h4></td><td colspan='2' style='width:10%;'><img src='favorpeople.png'><h4> " + this['favorpeople'] + "</h4></td></tr><tr id='content' class='content_" + this['id'] + "'><td colspan='8'><div class='apiblock' id='apiblock_" + this['id'] + "'><ul id='tabs' class='tabs_" + this['id'] + "'><li>Info</li><li>Pre</li><li>Post</li><li>Comp</li></ul><ul id='tabContent' class='tabContent_" + this['id'] + "'><li id='info_" + this['id'] + "'></li><li id='pre_" + this['id'] + "'></li><li id='pos_" + this['id'] + "'></li><li id='com_" + this['id'] + "'></li></ul></div></td></tr>";
+                lang += "<tr class='apititle' id=apititle_" + this['id'] + " ><td style='width:10%;'><img id=" + this['id'] + " class='logo' title=" + a[0] + " style='width:100%;' draggable='true' ondragstart='dragstartHandler(event)' src=" + hasPic(this['pic']) + "></td><td colspan='3' style='width:70%;'><h3>" + a[0] + "</h3></td><td colspan='2' style='width:10%;'><img src='workspacepeople_title.png'><h4> " + this['workspacepeople'] + "</h4></td><td colspan='2' style='width:10%;'><img id='faImgL_" + a[0] + "' class='list_favorImg' src='favorpeople.png'><h4> " + this['favorpeople'] + "</h4></td></tr><tr id='content' class='content_" + this['id'] + "'><td colspan='8'><div class='apiblock' id='apiblock_" + this['id'] + "'><ul id='tabs' class='tabs_" + this['id'] + "'><li>Info</li><li>Pre</li><li>Post</li><li>Comp</li></ul><ul id='tabContent' class='tabContent_" + this['id'] + "'><li id='info_" + this['id'] + "'></li><li id='pre_" + this['id'] + "'></li><li id='pos_" + this['id'] + "'></li><li id='com_" + this['id'] + "'></li></ul></div></td></tr>";
 
                 getInfo(myID, this['id']);
                 getPre(myID, this['id']);
@@ -169,6 +169,57 @@
             $('#result').css("display", "none");
 
             showTable();
+			
+			if (localStorage.userID != undefined) {
+				$('.list_favorImg').hover(function() {
+					$(this).attr("src", "addfavor.png");
+					$(this).css("cursor", "pointer");
+				}, function() {
+					$(this).attr("src", "favorpeople.png");
+				});
+
+				$('.list_favorImg').click(function(event) {
+					event.stopPropagation();
+					var apiName = (this.id).substring(7) + ".json";
+					var that = this;
+					console.log("apiName:" + apiName);
+					var con = "<form action='JavaScript:addFavorAPI(\"" + apiName + "\")'><center><font size=5>Category</font><hr color='#08605F' style='margin: 5px;'></center><div><select id='selectClass'>";
+
+					var site = "http://140.121.197.135:7778/servrel/favorite?userID=" + localStorage.userID;
+					$.when($.getJSON(site, function(result) {
+						$.each(result, function() {
+							con += "<option value='" + this + "'>" + this + "</option>";
+						});
+						con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name' required></div><input class='favorOK' type='submit' value='OK'></form>";
+					})).done(function() {						
+						layer.tips(con, that, {
+							tips: [3, '#3BA99C'],
+							time: 0,
+							skin: 'favorTip',
+							shade: [0, '#FFFFF'],
+							shadeClose: true
+						});
+						
+						if ($("#selectClass").val() != "newCategory") {
+							$("#newClass").hide();
+							$("#newClass").val("no");
+						}
+
+						$("#selectClass").change(function() {
+							if ($("#selectClass").val() == "newCategory") {
+								$("#newClass").val("");
+								$("#newClass").show();
+							} else {
+								$("#newClass").hide();
+								$("#newClass").val("no");
+							}
+						});
+						
+					});
+					
+				});
+			}
+			
         }
 
 
@@ -481,26 +532,23 @@
         function addFavorAPI(apiName) {
             var cate = $("#selectClass").val();
             var newName;
+			var site;
             console.log("name: " + apiName);
             console.log("class: " + cate);
             if (cate == "newCategory") {
                 newName = $("#newClass").val();
-                var site = "http://140.121.197.135:7778/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
-                $.post(site, function(result) {
-                    console.log("addAPI: " + JSON.stringify(result));
-                    if (result.code == "200") {
-
-                    }
-                }, "json");
+                site = "http://140.121.197.135:7778/servrel/favorite?category=" + newName + "&api=" + apiName + "&userID=" + localStorage.userID;
             } else {
-                var site = "http://140.121.197.135:7778/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
-                $.post(site, function(result) {
-                    console.log("addAPI: " + JSON.stringify(result));
-                    if (result.code == "200") {
-
-                    }
-                }, "json");
+                site = "http://140.121.197.135:7778/servrel/favorite?category=" + cate + "&api=" + apiName + "&userID=" + localStorage.userID;
             }
+			
+			$.post(site, function(result) {
+                    console.log("addAPI: " + JSON.stringify(result));
+					if (result.code == "200") {
+						alert("OK!");
+						layer.close(layer.tips());
+                    }
+			}, "json");
 
         }
 
@@ -585,14 +633,16 @@
                                 con += "<option value='newCategory'>Create a new category</option></select><br><input type='text' id='newClass' placeholder='Category name' required></div><input class='favorOK' type='submit' value='OK'></form>";
 
 
-                                layer.tips(con, ("#favorimg"), {
+                                layer.tips(con, "#favorimg", {
                                     tips: [3, '#3BA99C'],
                                     time: 0,
                                     skin: 'favorTip',
                                     shade: [0, '#FFFFF'],
                                     shadeClose: true
                                 });
-
+								
+								
+								
                                 if ($("#selectClass").val() != "newCategory") {
                                     $("#newClass").hide();
                                     $("#newClass").val("no");
