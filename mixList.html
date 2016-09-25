@@ -167,7 +167,8 @@
 
             $('#leftPart').html(lang);
             $('#result').css("display", "none");
-
+			$("#load").hide();
+            $('#result').slideDown("normal");
             showTable();
 			
 			if (localStorage.userID != undefined) {
@@ -232,8 +233,8 @@
         });
         $(document).ajaxStop(function() {
             if (isSearchAjax == true) {
-                $("#load").hide();
-                $('#result').slideDown("normal");
+                //$("#load").hide();
+                //$('#result').slideDown("normal");
                 isSearchAjax = false;
             }
         });
