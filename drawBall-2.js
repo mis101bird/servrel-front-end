@@ -59,7 +59,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
         child = {
             "id": (100 * countballs).toString(),
             "dataid": d_id,
-            "name": d_title + (100 * countballs).toString(),
+            "name": d_title,
             "children": [{
                 "id": (100 * countballs + 1).toString(),
                 "name": "",
@@ -118,7 +118,21 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             .attr("transform", function(d) {
                 return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
             })
-            .on("click", nodeClick);
+			.on("click" ,function(d) {
+				if (d._clickid) {
+                         clearTimeout(d._clickid);
+                         d._clickid = null;						
+						// process double click					
+					} else {
+						 d._clickid = setTimeout(function() {
+							// process simple click
+							// ...
+							d._clickid = null;
+						}.bind(this), 350);
+						nodeClick(d);
+					}
+			});
+            
         //以圖片做節點	
         node.append("image")
             .attr("width", img_w)
@@ -255,6 +269,7 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             button.select("rect")
                 .attr("fill", pressedColor)
         }
+		
         //點擊的話，隱藏或者顯示子節點
         function nodeClick(d) {
             if (deletenode == 1) {
@@ -409,7 +424,21 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                     if (d.visible == 0)
                         return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")";
                 })
-                .on("click", nodeClick);
+				.on("click", function(d) {
+					if (d._clickid) {
+                         clearTimeout(d._clickid);
+                         d._clickid = null;						
+						// process double click					
+					} else {
+						 d._clickid = setTimeout(function() {
+							// process simple click
+							// ...
+							d._clickid = null;
+						}.bind(this), 350);
+						nodeClick(d);
+					}
+				});
+                				
 
             node.append("image")
                 .attr("width", img_w)

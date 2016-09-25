@@ -119,7 +119,20 @@ function WdrawBall(svg, countballs) {
             .attr("transform", function(d) {
                 return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
             })
-            .on("click", nodeClick);
+            .on("click",  function(d) {
+					if (d._clickid) {
+                         clearTimeout(d._clickid);
+                         d._clickid = null;						
+						// process double click					
+					} else {
+						 d._clickid = setTimeout(function() {
+							// process simple click
+							// ...
+							d._clickid = null;
+						}.bind(this), 350);
+						nodeClick(d);
+					}
+				});
         //以圖片做節點	
         node.append("image")
             .attr("width", img_w)
@@ -271,7 +284,7 @@ function WdrawBall(svg, countballs) {
                 d3.event.stopPropagation();
                 return;
             } else if (pop == 1) {
-                popWindow(d_id);
+                popWindow(d.dataid);
                 pop = 0;
                 console.log("pop");
                 console.log(pop);
@@ -411,7 +424,20 @@ function WdrawBall(svg, countballs) {
                     if (d.visible == 0)
                         return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")";
                 })
-                .on("click", nodeClick);
+                .on("click",  function(d) {
+					if (d._clickid) {
+                         clearTimeout(d._clickid);
+                         d._clickid = null;						
+						// process double click					
+					} else {
+						 d._clickid = setTimeout(function() {
+							// process simple click
+							// ...
+							d._clickid = null;
+						}.bind(this), 350);
+						nodeClick(d);
+					}
+				});
 
             node.append("image")
                 .attr("width", img_w)
