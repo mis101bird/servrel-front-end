@@ -569,7 +569,7 @@
                     }
                 });
 
-                show += "</td><td><input type='button' class='popTestbtn' id='popTestBtn_" + apiid + "' value='test'><br><input type='button' class='popCodebtn' id='popCodebtn_" + apiid + "' value='codegen'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
+                show += "</td><td><input type='button' class='popTestbtn' id='popTestBtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
 
                 layer.open({
                     type: 1,
@@ -683,7 +683,7 @@
                     show += this.name + ": <input type='text' id='" + apiid + "_" + this.name + "' value='" + this.defaultValue + "' disabled><br>";
                 }
             });
-            show += "</div></td><td><input type='button' class='testbtn' id='testbtn_" + apiid + "' value='test'><br><input type='button' class='codebtn' id='codebtn_" + apiid + "' value='codegen'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2' style='padding:1%;'><div class='testResult' id='test_" + apiid + "'></div></td>";
+            show += "</div></td><td><input type='button' class='testbtn' id='testbtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2' style='padding:1%;'><div class='testResult' id='test_" + apiid + "'></div></td>";
 
             var dataid = "#info_" + apiid;
             $(dataid).html(show);
