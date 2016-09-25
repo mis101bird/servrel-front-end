@@ -184,18 +184,13 @@
 		
 		$(document).on('submit', '.uploadAPI', function(){
 			
-			var site = "https://api.imgur.com/3/image";
+			/*var site = "https://api.imgur.com/3/image";
 			var imgFile = $("#newAPIIcon")[0].files[0];
-			//var imgFile = $("#newAPIIcon").val();
 			console.log("Imgfile->" + imgFile);
-			/*$.post(site, {image: imgFile}, function(result) {
-				console.log("Img: " + JSON.stringify(result));
-			}, "json");*/
 			$.ajax({ 
-				url: 'https://api.imgur.com/3/image.json',
+				url: 'https://api.imgur.com/3/image',
 				headers: {
 					'Authorization': 'Client-ID ba6d73935e3884b',
-					'Accept': 'application/json'
 				},
 				type: 'POST',
 				data: {
@@ -210,7 +205,7 @@
 				cache: false,
 				contentType: false,
 				processData: false
-			});
+			});*/
 			
 			
 			
@@ -218,7 +213,7 @@
 			
 			
 			
-			/*var formData = new FormData($(this)[0]);
+			var formData = new FormData($(this)[0]);
 			var apiName = $("input[name='name']").val();
 			$.ajax({
 					url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID,
@@ -243,13 +238,13 @@
 					cache: false,
 					contentType: false,
 					processData: false
-			});*/
+			});
 			return false;
 		});
 		
 		$("#newMyAPI").click(function() {
 			$("li").filter('.active').removeClass('active');
-			var con = "<form id='newAPI' class='uploadAPI' method='post' enctype='multipart/form-data'>API Name: <input id='newAPIName' type='text' name='name' required><br><br>Icon: <input id='newAPIIcon' type='text' name='pic'><br><br>User ID: <input id='newUserID' type='text' name='userID' required><br><br><input id='newAPIID' type='hidden' name='id' value=''>Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><a href='http://editor.swagger.io' target='_blank'>→ go to swagger editor</a><br><br><input type='submit' id='newAPIBtn' value='Upload'></form>";
+			var con = "<form id='newAPI' class='uploadAPI' method='post' enctype='multipart/form-data'>API Name: <input id='newAPIName' type='text' name='name' required><br><br>Icon: <input id='newAPIIcon' type='file' name='pic'><br><br>User ID: <input id='newUserID' type='text' name='userID' required><br><br><input id='newAPIID' type='hidden' name='id' value=''>Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><a href='http://editor.swagger.io' target='_blank'>→ go to swagger editor</a><br><br><input type='submit' id='newAPIBtn' value='Upload'></form>";
 			$('#manageAPI').html(con);
 		});
     });
@@ -263,7 +258,7 @@
     <div id="titleBar">API Management</div>
 	
 	<div class="container">
-        <h2>My API</h2>
+        <h1>My API</h1>
 		<button type="button" class="btn btn-default btn-lg" id="newMyAPI">
 			<span class="glyphicon glyphicon-plus"></span> New API
         </button>
