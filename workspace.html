@@ -101,7 +101,9 @@
 
         function opendata() {
             $(".list-group-item").click(function() {
-                clearAll();
+                $("li").filter('.active').removeClass('active');
+                $(this).addClass('active').removeClass('hover');
+				clearAll();
                 getDraw();
                 console.log(this.id);
                 var site = "http://140.121.197.135:7778/servrel/workspace/project?userID=" + localStorage.userID + "&project=" + this.id;
