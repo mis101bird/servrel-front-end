@@ -11,13 +11,13 @@
 	overflow: auto;
 
 }
-#visualization2	{ width: 72%;
+#visualization2	{ width: 55%;
 		  height: 80%;
 		  position: absolute;
 		  top: 18%;
 		  float: left;
 		  background-color: #FCFFF5;
-		  left: 28%;
+		  left: 22%;
 		  padding: 2px;
 		  border: 1px green dashed;
 		  border-top: none;
