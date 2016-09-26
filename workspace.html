@@ -105,6 +105,8 @@
                 getDraw();
                 console.log(this.id);
                 var site = "http://140.121.197.135:7778/servrel/workspace/project?userID=" + localStorage.userID + "&project=" + this.id;
+				var projectname="<div><strong>"+this.id+"</strong></div>";
+				$('#ProjectName').html(projectname);
                 $.getJSON(site, function(data) {
                     console.log(data);
                     //console.log(data.data);
@@ -433,7 +435,8 @@
                     height: "26px"
                 }, "fast");
             });
-
+            var projectname="<div><strong>Project API</strong></div>";
+				$('#ProjectName').html(projectname);
             $("#titleBar").click(function() {
                 if (graphSize % 2 == 0) {
                     $("#saveButton").css({
@@ -470,7 +473,7 @@
                         left: "22%"
                     }, "normal");
                     $("#visualization2").animate({
-                        width: "55%",
+                        width: "58%",
                         left: "22%"
                     }, "normal");
                     $("#saveButton").animate({
@@ -506,8 +509,8 @@
 
     <div id="visualization2" class="draw" ondragover="dragoverHandler(event)" ondrop="dropHandler(event)">
     </div>
-    <div class="container" style="left:75%;right: 3%;height:80%;top: 18%;overflow:auto;">
-        <h2><strong>Project API Name</strong></h2>
+    <div class="container" style="left:80%;right:1%;height:80%;top: 18%;overflow:auto;">
+        <h2 id="ProjectName"></h2>
         <ul class="list-group" id="ProjectList">
         </ul>
     </div>
