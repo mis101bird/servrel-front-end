@@ -313,7 +313,7 @@
                     }
                 });
 
-                show += "</td><td><input type='button' class='popTestbtn' id='popTestBtn_" + apiid + "' value='test'><br><input type='button' class='popCodebtn' id='popCodebtn_" + apiid + "' value='codegen'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
+                show += "</td><td><input type='button' class='popTestbtn' id='popTestBtn_" + apiid + "' value='test'></td></tr><tr><td style='border-right:1px black solid;width:10%;'>result</td><td colspan='2'  style='padding:1%;'><div class='popTestResult' id='popTest_" + apiid + "' style='padding:0.5%;'></div></td></tr></table>";
 
                 layer.open({
                     type: 1,
@@ -327,37 +327,35 @@
 
                 var testbtn = "#popTestBtn_" + apiid;
                 $(testbtn).on("click", function() {
-                    var datas = [];
-                    var testJson = "{\"request\":";
-
-                    $.each(para, function() {
-                        var d = {};
-                        d["parameterpath"] = this.parameterpath;
-                        d["testData"] = $("#" + apiid + "_pop_" + this.name).val();
-                        d["name"] = this.name;
-                        datas.push(d);
-
-                    });
-
-                    testJson += JSON.stringify(datas) + ",";
-                    testJson += "\"Info\":";
-
-                    var testInfo = new Object();
-                    testInfo.path = data.Info.path;;
-                    testInfo.hostUrl = data.Info.hostUrl;
-                    testInfo.httpMethod = data.Info.httpMethod;
-                    testInfo.contentType = data.Info.contentType;
-                    testJson += JSON.stringify(testInfo) + "}";
-
-                    console.log("r: " + testJson);
-
-                    var site = "http://140.121.197.135:7778/servrel/callapi";
-                    $.post(site, {
-                        "test": testJson
-                    }, function(result) {
-                        $("#popTest_" + apiid).text(JSON.stringify(result));
-                    }, "json");
-
+					var datas = [];
+					var testJson = "{\"request\":";
+					
+					$.each(para, function() {
+						var d = {};
+						d["parameterpath"] = this.parameterpath;
+						d["testData"] = $("#" + apiid + "_pop_" + this.name).val();
+						d["name"] = this.name;
+						datas.push(d);
+						
+					});
+					
+					testJson += JSON.stringify(datas) + ",";
+					testJson += "\"Info\":";
+					
+					var testInfo = new Object();
+					testInfo.path = data.Info.path;;
+					testInfo.hostUrl = data.Info.hostUrl;
+					testInfo.httpMethod = data.Info.httpMethod;
+					testInfo.contentType = data.Info.contentType;
+					testJson += JSON.stringify(testInfo) + "}";
+					
+					console.log("r: " + testJson);
+					
+					var site = "http://140.121.197.135:7778/servrel/callapi";
+					$.post(site, {"test": testJson}, function(result){
+						$("#popTest_" + apiid).text(JSON.stringify(result));
+					}, "json");
+					
                 });
 
                 if (localStorage.userID != undefined) {
@@ -387,9 +385,9 @@
                                     shade: [0, '#FFFFF'],
                                     shadeClose: true
                                 });
-
-
-
+								
+								
+								
                                 if ($("#selectClass").val() != "newCategory") {
                                     $("#newClass").hide();
                                     $("#newClass").val("no");
@@ -414,7 +412,6 @@
             }, "json");
             d3.event.stopPropagation();
         }
-
 
 
         $(document).ready(function() {
