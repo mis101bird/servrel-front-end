@@ -136,6 +136,14 @@
 			left: 50%;
 			margin: 15% 0 0 -75px;
 		}
+		#mWait{
+			display: none;
+			position: relative;
+			text-align: center;
+			width: 150px;
+			left: 50%;
+			margin: -15% 0 0 -75px;
+		}
 	</style>
 	
 	<script>
@@ -160,15 +168,13 @@
 
 	$(document).ajaxStart(function() {
 		if (isUploadAjax == true) {
-			$("#wait").show();
+			$(".wait").show();
 		}
 	});
 	$(document).ajaxStop(function() {
 		if (isUploadAjax == true) {
-			$("#wait").hide();
+			$(".wait").hide();
 			isUploadAjax = false;
-			console.log("TFstop: " + isUploadAjax);
-			
 		}
 	});
 	
@@ -189,16 +195,14 @@
 			$("li").filter('.active').removeClass('active');
 			$(this).addClass('active').removeClass('hover');
 			
-			var apiid = (this.id).substring(10);		//(?????)my API ID			
-			
-			var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>Bandsintown artist event list<br><span class='item'>Introduction : </span>Returns the number of upcoming events of the artists. Useful in determining if an artist is on tour without requesting the event data.<br><span class='item'>Host URL : </span>http://api.bandsintown.com<br><span class='item'>Path : </span>/artists/{artists}/events.json<br><span class='item'>Http method : </span>GET<br><span class='item'>Content type : </span>application/json;charset=utf-8<br><span class='item'>API Home : </span>http://www.bandsintown.com/api/requests#artists-get</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='mAPIIcon' type='text' name='pic'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' disabled></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form><div id='deleteBlock'><input type='button' id='deleteMyAPI_" + apiid + "' class='dMyAPIBtn' value='delete this API'></div>";
+			var apiid = (this.id).substring(10);		//(?????)my API ID
 			
 			
 			var site = "http://140.121.197.135:7778/servrel/api/info?id=" + apiid;
             console.log(site);
-			/*$.post(site, function(data) {
+			$.post(site, function(data) {
                 console.log("MyAPI Info: " + JSON.stringify(data));
-                var con = "<div id='APIpic'><img src='https://s3.amazonaws.com/mashape-production-logos/apis/53aa37efe4b0f2c97546f538_medium'></div><div id='myAPIInfo'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='mAPIIcon' type='text' name='pic'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' disabled></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form><div id='deleteBlock'><input type='button' id='deleteMyAPI_" + apiid + "' class='dMyAPIBtn' value='delete this API'></div>";
+                var con = "<div id='APIpic'><img src='" + data.pic +"'></div><div id='myAPIInfo'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "<br><span class='item'>Add to favorite : </span>" + data.favorpeople + "<br><span class='item'>Add to workspace : </span>" + data.workspacepeople + "</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='newAPIIcon' type='file' name='picFile'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' name='id' disabled></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form><div id='mWait' class='wait'><img src='loading.gif'></img>Uploading...</div><div id='deleteBlock'><input type='button' id='deleteMyAPI_" + apiid + "' class='dMyAPIBtn' value='delete this API'></div>";
 				
 				$('#manageAPI').html(con);
 				
@@ -208,29 +212,17 @@
 					$.post(site, function(result) {
 						console.log("delete: " + JSON.stringify(result));
 						showMyAPIList();
+						alert("Delete successfully!");
+						$('#manageAPI').html("");
 					}, "json");					
 				});
 				
-            }, "json");*/
-			$('#manageAPI').html(con);
-				
-			$('.dMyAPIBtn').click(function(){
-				var site = "http://140.121.197.135:7778/servrel/manage/api?delete=true&id=" + apiid + "&userID=" + localStorage.userID;
-				console.log("deleteSite: " + site);
-				$.post(site, function(result) {
-					console.log("delete: " + JSON.stringify(result));
-					showMyAPIList();
-					alert("Delete successfully!");
-					$('#manageAPI').html("");
-				}, "json");
-				
-				
-			});
+            }, "json");
         });
 		
 		$(document).on('submit', '.uploadAPI', function(){
 			isUploadAjax = true;
-			console.log("TF:" + isUploadAjax);
+			//console.log("TF:" + isUploadAjax);
 			var x = document.getElementById("newAPIIcon");
 			var imgFile = x.files[0];
 			var imgLink = "";
@@ -268,8 +260,8 @@
 			
 			var formData = new FormData($(this)[0]);
 			var apiName = $("input[name='name']").val();
-			var uploadSite = "";
-			
+			console.log("form: " + $(this));
+			console.log("formdata: " + formData);
 			$.ajax({
 				url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID + "&pic=" + imgLink,
 				type: 'POST',
@@ -280,7 +272,6 @@
 					console.log(data);
 					if(dataJSON.code == '200'){
 						alert("Upload success!");
-						console.log("up: " + uploadSite);
 						showMyAPIList();
 						$(".uploadAPI").find("input:text, input:file").each(function() {
 							$(this).val("");
