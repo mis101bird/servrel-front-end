@@ -750,7 +750,7 @@
             if (JSON.stringify(data) != "[]") {
                 $.each(data, function() {
                     a = this['name'].split(".json", 1);
-                    lang += "<tr><td style='width:20%;'><img id=rel_" + this.id + " class='relogo' title=" + a[0] + " draggable='true' ondragstart='dragstartHandler(event)' src=" + hasPic(this.pic) + "></td><td>" + a[0] + "</td></tr>";
+                    lang += "<tr onclick='popWindow(" + this.id + ")' style='cursor: pointer;'><td style='width:20%;'><img id=rel_" + this.id + " class='relogo' title=" + a[0] + " draggable='true' ondragstart='dragstartHandler(event)' src=" + hasPic(this.pic) + "></td><td>" + a[0] + "</td></tr>";
 
                 });
             } else {
