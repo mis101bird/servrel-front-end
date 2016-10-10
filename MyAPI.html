@@ -226,6 +226,9 @@
 			var x = document.getElementById("newAPIIcon");
 			var imgFile = x.files[0];
 			var imgLink = "";
+			var formData = new FormData($(this)[0]);
+			var site = "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID;
+			var option;
 			
 			var reader = new FileReader();
 			if(imgFile != undefined){
@@ -247,6 +250,34 @@
 						success: function(result) {
 							console.log("pic: " + result.data.link);
 							imgLink = result.data.link;
+							site += "&pic=" + imgLink;
+							console.log("imgsite: " + site);
+							option = {
+								url: site,
+								type: 'POST',
+								data: formData,
+								async: false,
+								success: function (data) {
+									var dataJSON = $.parseJSON(data);
+									console.log(data);
+									if(dataJSON.code == '200'){
+										alert('Upload success!');
+										showMyAPIList();
+										$('.uploadAPI').find('input:text, input:file').each(function() {
+											$(this).val("");
+										});
+									}
+									else if(dataJSON.code == '400'){
+										alert('Please change another API name.');
+										$('#newAPIName').val("");
+									}
+								},
+								cache: false,
+								contentType: false,
+								processData: false
+							};
+							console.log("o: " + option);
+							$.ajax(option);
 						},
 						error: function(data){
 							console.log('request failed :'+ JSON.stringify(data));
@@ -255,43 +286,41 @@
 				}
 				reader.readAsDataURL(imgFile);
 			}
+			else{
+			//console.log('sss');
+				option = {
+					url: site,
+					type: 'POST',
+					data: formData,
+					async: false,
+					success: function (data) {
+						var dataJSON = $.parseJSON(data);
+						console.log(data);
+						if(dataJSON.code == '200'){
+							alert("Upload success!");
+							showMyAPIList();
+							$(".uploadAPI").find("input:text, input:file").each(function() {
+								$(this).val("");
+							});
+						}
+						else if(dataJSON.code == '400'){
+							alert("Please change another API name.");
+							$("#newAPIName").val("");
+						}
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				};
+				$.ajax(option);
+			}
 			
-			
-			
-			var formData = new FormData($(this)[0]);
-			var apiName = $("input[name='name']").val();
-			console.log("form: " + $(this));
-			console.log("formdata: " + formData);
-			$.ajax({
-				url: "http://140.121.197.135:7778/servrel/manage/api?userID=" + localStorage.userID + "&pic=" + imgLink,
-				type: 'POST',
-				data: formData,
-				async: false,
-				success: function (data) {
-					var dataJSON = $.parseJSON(data);
-					console.log(data);
-					if(dataJSON.code == '200'){
-						alert("Upload success!");
-						showMyAPIList();
-						$(".uploadAPI").find("input:text, input:file").each(function() {
-							$(this).val("");
-						});
-					}
-					else if(dataJSON.code == '400'){
-						alert("Please change another API name.");
-						$("#newAPIName").val("");
-					}
-				},
-				cache: false,
-				contentType: false,
-				processData: false
-			});
 			return false;
 		});
 		
 		$("#newMyAPI").click(function() {
 			$("li").filter('.active').removeClass('active');
-			var con = "<form id='newAPI' class='uploadAPI' method='post' enctype='multipart/form-data'>API Name: <input id='newAPIName' type='text' name='name' required><br><br>Icon: <input id='newAPIIcon' type='file' name='pic'><br><br>User ID: <input id='newUserID' type='text' name='userID' required><br><br><input id='newAPIID' type='hidden' name='id' value=''>Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><a href='http://editor.swagger.io' target='_blank'>→ go to swagger editor</a><br><br><input type='submit' id='newAPIBtn' value='Upload'></form><div id='wait'><img src='loading.gif'></img>Uploading...</div>";
+			var con = "<form id='newAPI' class='uploadAPI' method='post' enctype='multipart/form-data'>API Name: <input id='newAPIName' type='text' name='name' required><br><br>Icon: <input id='newAPIIcon' type='file' name='pic'><br><br>User ID: <input id='newUserID' type='text' name='userID' required><br><br><input id='newAPIID' type='hidden' name='id' value=''>Swagger: <input id='newAPIFile' type='file' name='swagger' required><br><a href='http://editor.swagger.io' target='_blank'>→ go to swagger editor</a><br><br><input type='submit' id='newAPIBtn' value='Upload'></form><div id='wait' class='wait'><img src='loading.gif'></img>Uploading...</div>";
 			$('#manageAPI').html(con);
 		});
     });
@@ -325,7 +354,7 @@
 			<a href='http://editor.swagger.io' target='_blank'>→ go to swagger editor</a><br><br>
 			<input type='submit' id='newAPIBtn' value='Upload'>
 		</form>
-		<div id='wait'>
+		<div id='wait' class='wait'>
 			<img src="loading.gif"></img>
 			Uploading...
 		</div>
