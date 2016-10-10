@@ -118,6 +118,10 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             .attr("transform", function(d) {
                 return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
             })
+			.on('dblclick', function(d) {
+					// process double click
+					// ...
+				})
 			.on("click" ,function(d) {
 				if (d._clickid) {
                          clearTimeout(d._clickid);
@@ -127,9 +131,11 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
 						 d._clickid = setTimeout(function() {
 							// process simple click
 							// ...
+							
 							d._clickid = null;
 						}.bind(this), 350);
 						nodeClick(d);
+						
 					}
 			});
             
@@ -351,9 +357,9 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             } else {
                 d.children = d._children;
                 d._children = null;
-                if (d.mark == 'comp') getcomp(d);
-                else if (d.mark == 'pre') getpre(d);
-                else if (d.mark == 'post') getpost(d);
+                if (d.mark == 'comp') _.debounce(getcomp(d), 1000, true);
+                else if (d.mark == 'pre') _.debounce(getpre(d), 1000, true);
+                else if (d.mark == 'post') _.debounce(getpost(d), 1000, true);
                 else if (d.children == null) getthree(d);
                 /* console.log(root);
                  console.log("發散");
@@ -424,6 +430,10 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
                     if (d.visible == 0)
                         return "rotate(" + (source.x0 - 90) + ")translate(" + source.y0 + ")";
                 })
+				.on('dblclick', function(d) {
+					// process double click
+					// ...
+				})
 				.on("click", function(d) {
 					if (d._clickid) {
                          clearTimeout(d._clickid);
@@ -596,28 +606,46 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
             //update(d);
 
         }
-
+           var i=-1;
         function getcomp(d) {
             var site = "http://140.121.197.135:7778/servrel/apis/competitive?id=" + d.parent.dataid;
-            console.log(d);
-            console.log(d.parent.dataid);
+            //console.log(d);
+            //console.log(d.parent.dataid);
             //root.children[0].children = [];
             d.children = [];
             $.getJSON(site, function(result) {
-                console.log(result);
-                console.log(d);
+                //console.log(result);
+                //console.log(d);
                 console.log(d.children);
+				var push=1;
                 $.each(result, function(index, value) {
                     console.log(value);
                     if (!d.children) d.children = [];
-                    if (!d.children.children) d.children.children = [];
+                   // if (!d.children.children) d.children.children = [];
                     value["image"] = value.pic;
                     value["dataid"] = value.id;
                     value["visible"] = 0;
                     value["id"] = Math.floor(Math.random() * 100000);
                     console.log(value);
-                    // d.children[index]=[];
-                    d.children.push(value);
+                    // d.children[index]=[];					
+					//console.log(d.children.dataid);
+					 									
+					if(push==1)
+					{
+						d.children.push(value);
+						i++;
+				        console.log("i");
+						console.log(i);
+						
+						console.log("d.children[i]");
+						console.log(d.children[i]);
+						
+						/*if(i>4)
+						{d.children.pop();}
+					    if(i==4 || i==9)
+						{}}*/
+					}
+				    
                 });
                 console.log(root);
                 update(root);
