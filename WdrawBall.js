@@ -351,9 +351,9 @@ function WdrawBall(svg, countballs) {
             } else {
                 d.children = d._children;
                 d._children = null;
-                if (d.mark == 'comp') getcomp(d);
-                else if (d.mark == 'pre') getpre(d);
-                else if (d.mark == 'post') getpost(d);
+                if (d.mark == 'comp') _.debounce(getcomp(d), 1000, true);
+                else if (d.mark == 'pre') _.debounce(getpre(d), 1000, true);
+                else if (d.mark == 'post') _.debounce(getpost(d), 1000, true);
                 else if (d.children == null) getthree(d);
                 /* console.log(root);
                  console.log("發散");

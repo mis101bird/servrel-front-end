@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <meta charset="utf-8">
 <html>
 
@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="layer-v2.3/layer/layer.js"></script>
     <script type="text/javascript" src="WdrawBall.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="jquery.tipsy.js"></script>
@@ -140,8 +141,10 @@
                 $.post(site, function(result) {
                     //console.log("post: " + JSON.stringify(result));
                     result = JSON.parse(JSON.stringify(result));
-                    console.log(result.Info.name);
-                    show += "<h3>" + result.Info.name + "</h3>";
+					console.log(result);	
+                    console.log(result.Info.name);	
+					//console.log(root.children[i].dataid);
+                    show += "<a><h3 style='cursor:pointer'; onclick=popWindow("+result.id+");>" + result.Info.name + "</h3></a>";
                     //console.log(show);
 					$('#ProjectList').html(show);
                 }, "json");

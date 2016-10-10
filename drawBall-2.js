@@ -53,6 +53,15 @@ function drawBall(svg, countballs, d_id, d_title, d_src) {
 
     //根據JSON數據生成樹
     function start() {
+		//var rel_len=d_id.length;
+		var rel_pos=d_id.search("rel_");
+		console.log(rel_pos);
+		if(rel_pos!=-1)
+		{
+		  d_id=d_id.slice(5);
+		  console.log("d_id");
+          console.log(d_id.slice(rel_pos));		  
+		}
         if (countballs == 1) {
             root.children = [];
         }
