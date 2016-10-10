@@ -202,7 +202,7 @@
             console.log(site);
 			$.post(site, function(data) {
                 console.log("MyAPI Info: " + JSON.stringify(data));
-                var con = "<div id='APIpic'><img src='" + data.pic +"'></div><div id='myAPIInfo'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "<br><span class='item'>Add to favorite : </span>" + data.favorpeople + "<br><span class='item'>Add to workspace : </span>" + data.workspacepeople + "</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='newAPIIcon' type='file' name='picFile'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' name='id' disabled></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form><div id='mWait' class='wait'><img src='loading.gif'></img>Uploading...</div><div id='deleteBlock'><input type='button' id='deleteMyAPI_" + apiid + "' class='dMyAPIBtn' value='delete this API'></div>";
+                var con = "<div id='APIpic'><img src='" + data.pic +"'></div><div id='myAPIInfo'><span class='item'>API name : </span>" + data.Info.name + "<br><span class='item'>Introduction : </span>" + data.Info.introduction + "<br><span class='item'>Host URL : </span>" + data.Info.hostUrl + "<br><span class='item'>Path : </span>" + data.Info.path + "<br><span class='item'>Http method : </span>" + data.Info.httpMethod + "<br><span class='item'>Content type : </span>" + data.Info.contentType + "<br><span class='item'>API endpoint : </span>" + data.Info.apiEndpoint + "<br><span class='item'>Add to favorite : </span>" + data.favorpeople + "<br><span class='item'>Add to workspace : </span>" + data.workspacepeople + "</div><br><form id='modifyAPI' class='uploadAPI' method='post' enctype='multipart/form-data'><p>API Name: <input id='mAPIName' type='text' name='name' required></p><p>Icon: <input id='newAPIIcon' type='file' name='picFile'></p><p>User ID: <input id='mUserID' type='text' value='" + localStorage.userID + "' name='userID' required></p><p>API ID: <input id='mAPIID' type='text' value='" + apiid + "' name='id' readonly='true'></p><p>Swagger: <input id='mAPIFile' type='file' name='swagger' required></p><input type='submit' id='mBtn' value='Save'></form><div id='mWait' class='wait'><img src='loading.gif'></img>Uploading...</div><div id='deleteBlock'><input type='button' id='deleteMyAPI_" + apiid + "' class='dMyAPIBtn' value='delete this API'></div>";
 				
 				$('#manageAPI').html(con);
 				
@@ -222,7 +222,6 @@
 		
 		$(document).on('submit', '.uploadAPI', function(){
 			isUploadAjax = true;
-			//console.log("TF:" + isUploadAjax);
 			var x = document.getElementById("newAPIIcon");
 			var imgFile = x.files[0];
 			var imgLink = "";
@@ -263,9 +262,10 @@
 									if(dataJSON.code == '200'){
 										alert('Upload success!');
 										showMyAPIList();
-										$('.uploadAPI').find('input:text, input:file').each(function() {
-											$(this).val("");
-										});
+										$('input[name=name]').val("");
+										$('input[name=picFile]').val("");
+										$('input[name=userID]').val("");
+										$('input[name=swagger]').val("");
 									}
 									else if(dataJSON.code == '400'){
 										alert('Please change another API name.');
@@ -287,7 +287,6 @@
 				reader.readAsDataURL(imgFile);
 			}
 			else{
-			//console.log('sss');
 				option = {
 					url: site,
 					type: 'POST',
@@ -299,9 +298,10 @@
 						if(dataJSON.code == '200'){
 							alert("Upload success!");
 							showMyAPIList();
-							$(".uploadAPI").find("input:text, input:file").each(function() {
-								$(this).val("");
-							});
+							$('input[name=name]').val("");
+							$('input[name=picFile]').val("");
+							$('input[name=userID]').val("");
+							$('input[name=swagger]').val("");
 						}
 						else if(dataJSON.code == '400'){
 							alert("Please change another API name.");
