@@ -186,9 +186,10 @@
 							if(result.code == "200"){
 								var titleid = "#favorAPITitle_" + apiid;
 								$(titleid).remove();
+								showCategory();
 							}
 						}, "json");
-						showCategory();
+						
 					});
 					
 				});
